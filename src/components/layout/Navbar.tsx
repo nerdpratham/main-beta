@@ -260,24 +260,15 @@ export default function Navbar() {
           --cta-bg:        #ffffff;
           --cta-text:      #000000;
         }
+        /* theme-light must override COLOURS only. It must NOT re-declare layout
+           vars (logo height, paddings, overlay sizes): redeclaring them here at
+           higher specificity clobbered the responsive tablet/mobile overrides,
+           which made the dark (light-theme) logo render at the desktop 2.75rem
+           height on mobile while the white logo stayed 32px. */
         header.sixdx-nav.theme-light {
           --nav-bar-bg:    rgba(28,11,5,0.08);
           --nav-link-bg:   #FCF4F2;
           --nav-link-hover-bg: rgba(255,255,255,0);
-          --nav-link-blur: 4px;
-          --nav-link-hover-blur: 0px;
-          --nav-logo-height: 2.75rem;
-          --nav-link-padding-x: 1rem;
-          --nav-link-padding-y: 0.25rem;
-          --nav-padding-x: 28px;
-          --nav-padding-y: 8px;
-          --nav-overlay-padding: 20px;
-          --nav-overlay-header-gap: 60px;
-          --nav-overlay-logo-width: 102px;
-          --nav-overlay-logo-height: 40px;
-          --nav-overlay-link-gap: 8px;
-          --nav-overlay-link-size: 2.25rem;
-          --nav-overlay-link-line-height: 1.1;
           --nav-text:      #1C0B05;
           --cta-bg:        #CC4D22;
           --cta-text:      #ffffff;
