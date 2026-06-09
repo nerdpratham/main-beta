@@ -315,9 +315,36 @@ export default function HowItWorksSection() {
             min-height: 420px !important;
           }
 
+          /* Let each card grow to fit its content and stack the title, image
+             and copy top-to-bottom with a real gap. The previous fixed height
+             + space-between made the (non-shrinking) image overlap the title
+             and body once the text wrapped on narrow screens. */
           .how-it-works-card {
-            height: min(132vw, 600px) !important;
-            min-height: 520px !important;
+            height: auto !important;
+            min-height: 0 !important;
+            justify-content: flex-start !important;
+            gap: 20px !important;
+          }
+
+          .how-card-illo {
+            flex: 0 0 auto !important;
+            padding: 0 !important;
+          }
+
+          .how-card-frame {
+            height: auto !important;
+            max-height: 300px !important;
+            flex: 0 0 auto !important;
+          }
+
+          /* Drop the scale transform on mobile so the image never visually
+             spills past its box into the surrounding text. */
+          .how-card-frame img {
+            transform: none !important;
+            height: auto !important;
+            width: auto !important;
+            max-height: 280px !important;
+            max-width: 100% !important;
           }
         }
       `}</style>
@@ -332,10 +359,10 @@ export default function HowItWorksSection() {
             <article className="how-it-works-card" key={step.title} style={s.card}>
               <img src={step.bg} alt="" aria-hidden="true" style={s.cardBg} />
 
-              <h3 style={s.cardTitle}>{step.title}</h3>
+              <h3 className="how-card-title" style={s.cardTitle}>{step.title}</h3>
 
-              <div style={s.illustrationWrap} aria-hidden="true">
-                <div style={s.illustrationFrame}>
+              <div className="how-card-illo" style={s.illustrationWrap} aria-hidden="true">
+                <div className="how-card-frame" style={s.illustrationFrame}>
                   <img
                     src={step.illustration}
                     alt=""
@@ -348,7 +375,7 @@ export default function HowItWorksSection() {
                 </div>
               </div>
 
-              <p style={s.cardCopy}>{step.body}</p>
+              <p className="how-card-copy" style={s.cardCopy}>{step.body}</p>
             </article>
           ))}
         </div>
