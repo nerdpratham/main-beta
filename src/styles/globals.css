@@ -1,0 +1,491 @@
+/* ─── GLOBAL STYLES — SixDX ─────────────────────────────────────────────── */
+
+@import "tailwindcss";
+@import "./tokens.css";
+@import "./typography.css";
+
+/* ── Reset ──────────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto; /* Lenis handles smooth scroll */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  --site-grain-opacity: 0.8;
+  --site-grain-size: 120px;
+  --site-grain-speed: 0.9s;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+main {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* ── Site-wide animated grain experiment ──────────────────────────────────
+   Edit these on body above:
+   --site-grain-opacity  visual strength
+   --site-grain-size     noise texture scale
+   --site-grain-speed    animation speed
+*/
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  z-index: 2147483647;
+  pointer-events: none;
+  opacity: var(--site-grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23grain)' opacity='0.85'/%3E%3C/svg%3E");
+  background-size: var(--site-grain-size) var(--site-grain-size);
+  mix-blend-mode: overlay;
+  transform: translate3d(0, 0, 0);
+  animation: site-grain-drift var(--site-grain-speed) steps(2, end) infinite;
+}
+
+@keyframes site-grain-drift {
+  0% { transform: translate3d(0, 0, 0); }
+  20% { transform: translate3d(-3%, 2%, 0); }
+  40% { transform: translate3d(2%, -4%, 0); }
+  60% { transform: translate3d(-5%, -1%, 0); }
+  80% { transform: translate3d(4%, 3%, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+/* ── Utility — will-change on animating elements only ──────────────────── */
+.will-animate {
+  will-change: transform, opacity;
+}
+
+/* ── Smooth scroll wrapper (Lenis target) ──────────────────────────────── */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CLARTE BUTTON
+   Anchor-based CTA with rolling-text + arrow hover animation.
+   Structure: .clarte-button > [bg | text-wrap[text, text-clone] | arrow-wrap[arrow, arrow-clone]]
+   Hover: dark bg slides up from below; both text and arrow roll up; clone (white) slides in.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.clarte-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.125rem;
+  background-color: #ffffff;
+  color: #000000;
+  text-decoration: none;
+  overflow: hidden;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+/* Sliding background fill — rises from bottom on hover */
+.clarte-button-bg {
+  position: absolute;
+  inset: 0;
+  background-color: var(--clarte-hover-bg, #0a0a0a);
+  transform: translateY(101%);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 0;
+}
+.clarte-button:hover .clarte-button-bg {
+  transform: translateY(0);
+}
+
+/* Text wrap — clips to one line; stacks real text above clone */
+.clarte-button-text-wrap {
+  position: relative;
+  overflow: hidden;
+  height: 1.4em; /* 1 line at lineHeight 1.4 */
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+.clarte-button-text {
+  display: block;
+  line-height: 1.4;
+  flex-shrink: 0;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.clarte-button-text-clone {
+  display: block;
+  line-height: 1.4;
+  flex-shrink: 0;
+  color: var(--clarte-hover-text, #ffffff);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.clarte-button:hover .clarte-button-text,
+.clarte-button:hover .clarte-button-text-clone {
+  transform: translateY(-100%);
+}
+
+/* Arrow wrap — clips to 16×16 SVG; stacks arrow above clone */
+.clarte-button-arrow-wrap {
+  position: relative;
+  overflow: hidden;
+  height: 1rem;
+  width: 1rem;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+.clarte-button-arrow {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.clarte-button-arrow-clone {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  color: var(--clarte-hover-text, #ffffff);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.clarte-button:hover .clarte-button-arrow,
+.clarte-button:hover .clarte-button-arrow-clone {
+  transform: translateY(-100%);
+}
+
+/* Nav variant — matches glass-pill sizing; inherits nav CSS vars for theme awareness */
+.clarte-button--nav {
+  align-self: center !important;
+  background-color: var(--cta-bg, #ffffff);
+  color: var(--cta-text, #000000);
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.clarte-button--nav .clarte-button-bg {
+  background-color: var(--clarte-hover-bg, #CC4D22);
+}
+.clarte-button--nav .clarte-button-text-clone,
+.clarte-button--nav .clarte-button-arrow-clone {
+  color: var(--clarte-hover-text, #ffffff);
+}
+
+.primary-button--brand {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background-color: #CC4D22;
+  color: #ffffff;
+}
+.primary-button--brand .clarte-button-bg {
+  background-color: #1C0B05;
+}
+.primary-button--brand .clarte-button-text-clone,
+.primary-button--brand .clarte-button-arrow-clone {
+  color: #ffffff;
+}
+
+.primary-button--white {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background-color: #ffffff;
+  color: #000000;
+}
+.primary-button--white .clarte-button-bg {
+  background-color: #CC4D22;
+}
+.primary-button--white .clarte-button-text-clone,
+.primary-button--white .clarte-button-arrow-clone {
+  color: #ffffff;
+}
+
+/* Nav hover vars — dark sections: black fill / white text; light: darker brand / white text */
+header.sixdx-nav {
+  --clarte-hover-bg:   #CC4D22;
+  --clarte-hover-text: #ffffff;
+}
+header.sixdx-nav.theme-light {
+  --clarte-hover-bg:   #CC4D22;
+  --clarte-hover-text: #ffffff;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE OVERRIDES
+   Desktop (≥1200px) — untouched. All component inline styles govern.
+   Tablet  (810–1199px) — multi-column layouts collapse to stacked/2-col.
+   Mobile  (≤809px)  — single column, tighter padding.
+   !important overrides component-level inline styles without touching them.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── PrimaryButton — all instances ─────────────────────────────────────── */
+@media (max-width: 809px) {
+  .sixdx-primary-btn {
+    width: 100% !important;
+    filter: none !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    margin-left: 0 !important;
+    height: auto !important;
+  }
+  .sixdx-primary-pill {
+    flex: 1 !important;
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+    padding-left: 1.75rem !important;
+    justify-content: flex-start !important;
+  }
+  .sixdx-arrow-square {
+    margin-left: 0.5rem !important;
+  }
+}
+
+/* ── Footer nav pills ───────────────────────────────────────────────────── */
+@media (max-width: 809px) {
+  .footer-nav-pills { flex-direction: column !important; gap: 0 !important; }
+  .footer-nav-pills > a {
+    text-align: left !important;
+    padding: 12px 16px !important;
+    border-bottom: 0 !important;
+  }
+}
+
+/* ── Stack Section ──────────────────────────────────────────────────────── */
+@media (max-width: 809px) {
+  .sixdx-stack-h2    { font-size: 20px !important; }
+  .sixdx-stack-stats { padding: 60px 16px !important; }
+}
+
+/* ── About Section ──────────────────────────────────────────────────────── */
+@media (max-width: 1199px) {
+  .about-section     { padding: 80px 28px !important; }
+  .about-upper-row   { flex-direction: column !important; }
+  .about-lower-row   { flex-direction: column !important; }
+  .about-quote-col   { height: auto !important; }
+  .about-image-frame { height: 340px !important; }
+}
+@media (max-width: 809px) {
+  .about-section     { padding: 60px 16px !important; }
+  .about-image-frame { height: 240px !important; }
+}
+
+/* ── Work Section ───────────────────────────────────────────────────────── */
+@media (max-width: 1199px) {
+  .work-section {
+    min-height: auto !important;
+  }
+  .work-row {
+    gap: 28px !important;
+  }
+  .work-copy-col {
+    width: 45% !important;
+  }
+  .work-media-frame {
+    width: min(49vw, 690px) !important;
+    height: min(34vw, 480px) !important;
+  }
+  .work-title {
+    font-size: clamp(2.5rem, 5vw, 3.75rem) !important;
+    white-space: normal !important;
+  }
+}
+@media (max-width: 809px) {
+  .work-section {
+    padding: 60px 16px !important;
+    gap: 48px !important;
+  }
+  .work-list {
+    gap: 28px !important;
+  }
+  .work-row {
+    flex-direction: column !important;
+    min-height: auto !important;
+    gap: 28px !important;
+  }
+  .work-copy-col {
+    width: 100% !important;
+    min-height: auto !important;
+    gap: 32px !important;
+  }
+  .work-description {
+    width: 100% !important;
+  }
+  .work-media-frame {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 690 / 480 !important;
+  }
+}
+
+/* ── How SixDX Works Section ────────────────────────────────────────────── */
+@media (max-width: 809px) {
+  .how-sixdx-works {
+    padding: 60px 16px !important;
+    min-height: 100svh !important;
+  }
+  .how-sixdx-header {
+    max-width: 100% !important;
+  }
+  .how-sixdx-grid {
+    grid-template-columns: 1fr !important;
+    margin-top: 32px !important;
+  }
+  .how-sixdx-step-panel,
+  .how-sixdx-visual-panel {
+    min-height: 300px !important;
+  }
+  .how-sixdx-body-card {
+    left: 12px !important;
+    right: 12px !important;
+    bottom: 12px !important;
+  }
+}
+
+/* ── Services Intro Section ─────────────────────────────────────────────── */
+.services-flash-highlight {
+  --services-lightning-color: #E1A853;
+  --services-highlight-ease: cubic-bezier(.645, .045, .355, 1);
+  color: inherit;
+}
+
+.services-highlight-word {
+  display: inline;
+  color: inherit;
+}
+
+.services-flash-highlight:not(.is-active) .services-highlight-word {
+  animation: none;
+  animation-delay: 0s;
+}
+
+.services-flash-highlight.is-active .services-highlight-word {
+  animation: services-benefits-color-blink-in 0.32s var(--services-highlight-ease) both;
+  animation-delay: calc((var(--word) - 1) * 32ms + 0.125s);
+}
+
+@keyframes services-benefits-color-blink-in {
+  0% {
+    color: var(--services-lightning-color);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  35% {
+    color: var(--services-lightning-color);
+  }
+  55% {
+    opacity: 0.65;
+  }
+  70% {
+    color: inherit;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    color: inherit;
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1199px) {
+  .services-intro-section {
+    padding: 28px !important;
+  }
+  .services-intro-heading {
+    font-size: clamp(2.5rem, 6vw, 3.75rem) !important;
+  }
+  .wwc-details-bar {
+    align-items: center !important;
+  }
+  .wwc-details-inner {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+  .wwc-service-media {
+    height: clamp(380px, calc(100svh - 150px), 616px) !important;
+  }
+  .wwc-details-body {
+    width: 100% !important;
+    flex-shrink: 1 !important;
+  }
+}
+@media (max-width: 809px) {
+  .services-intro-section {
+    min-height: 100svh !important;
+    padding: 16px !important;
+    align-items: center !important;
+  }
+  .services-intro-heading {
+    font-size: clamp(2rem, 10vw, 3rem) !important;
+    letter-spacing: -0.04em !important;
+  }
+  .wwc-details-bar {
+    padding: 16px !important;
+  }
+  .wwc-service-media {
+    height: 58svh !important;
+  }
+  .wwc-service-overlay {
+    left: 16px !important;
+    height: 160px !important;
+  }
+}
+
+/* ── Contact Section ────────────────────────────────────────────────────── */
+@media (max-width: 1199px) {
+  .contact-section { flex-direction: column !important; gap: 48px !important; padding: 80px 28px !important; }
+  .contact-form    { width: 100% !important; }
+  .contact-left    { max-width: 100% !important; }
+}
+@media (max-width: 809px) {
+  .contact-section { padding: 60px 16px !important; }
+  .contact-offices { flex-direction: column !important; }
+}
+
+/* ── Footer Section ─────────────────────────────────────────────────────── */
+@media (max-width: 1199px) {
+  .footer-main-row { flex-direction: column !important; gap: 48px !important; }
+  .footer-offices  { width: 100% !important; }
+}
+@media (max-width: 809px) {
+  .footer-gradient-block   { padding: 60px 16px 40px !important; gap: 80px !important; }
+  .footer-bottom-bar       { padding-left: 16px !important; padding-right: 16px !important; }
+  .footer-newsletter-card  { width: 100% !important; height: auto !important; aspect-ratio: 329 / 186; }
+}
