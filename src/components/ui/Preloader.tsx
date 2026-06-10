@@ -354,11 +354,9 @@ export default function Preloader() {
         .sixdx-preloader__line:nth-child(1) {
           background: linear-gradient(
             180deg,
-            rgba(255,255,255,1) 15%,
-            rgb(251, 241, 239) 24%,
-            rgb(250, 224, 216) 39%,
-            rgba(212,105,69,1) 54%,
-            rgba(204,77,34,1) 58%,
+            rgb(244, 178, 1) 0%,
+            rgba(212,105,69,1) 42%,
+            rgba(204,77,34,1) 50%,
             rgba(17,7,3,1) 89%
           );
           animation-delay: 1.3s;
@@ -372,11 +370,9 @@ export default function Preloader() {
         .sixdx-preloader__line:nth-child(3) {
           background: linear-gradient(
             180deg,
-            rgba(255,255,255,1) 15%,
-            rgb(251, 241, 239) 24%,
-            rgb(250, 224, 216) 39%,
-            rgba(212,105,69,1) 54%,
-            rgba(204,77,34,1) 58%,
+            rgb(244, 178, 1) 0%,
+            rgba(212,105,69,1) 42%,
+            rgba(204,77,34,1) 50%,
             rgba(17,7,3,1) 89%
           );
           animation-delay: 1.5s;
