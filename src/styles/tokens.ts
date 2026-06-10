@@ -213,7 +213,7 @@ export const typography = {
     family: fonts.hn,
     weight: 400,
     // About / editorial statement. Edit tablet and mobile values here for responsive About heading control.
-    size: { desktop: '4.5rem', tablet: '3.5rem', mobile: '2.25rem' },
+    size: { desktop: '4.5rem', tablet: '3.5rem', mobile: '2rem' },
     lineHeight: { desktop: 1, tablet: 1, mobile: 1.04 },
     letterSpacing: { desktop: '-0.04em', tablet: '-0.04em', mobile: '-0.04em' },
   },
