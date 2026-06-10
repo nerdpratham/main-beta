@@ -1,4 +1,4 @@
-/* ─── FONT FACES ─────────────────────────────────────────────────────────── */
+/* FONT FACES */
 
 @font-face {
   font-family: 'Marund';
@@ -8,7 +8,14 @@
   font-display: block; /* block to prevent FOUT on hero headline */
 }
 
-/* Helvetica Neue — loaded from the .ttc collection */
+@font-face {
+  font-family: 'HelveticaNeue';
+  src: url('/fonts/HelveticaNeue-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
 @font-face {
   font-family: 'HelveticaNeue';
   src: url('/fonts/HelveticaNeue.ttc') format('truetype');
@@ -19,7 +26,7 @@
 
 @font-face {
   font-family: 'HelveticaNeue';
-  src: url('/fonts/HelveticaNeue.ttc') format('truetype');
+  src: url('/fonts/HelveticaNeue-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;

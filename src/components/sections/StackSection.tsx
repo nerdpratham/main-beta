@@ -595,9 +595,10 @@ export default function StackSection() {
             margin-block: 44px 52px;
           }
           .stat-meter-number {
-            font-size: 4.75rem !important;
+            font-size: 3.75rem !important;
             line-height: 0.95 !important;
             letter-spacing: -0.05em !important;
+            font-weight: 200 !important;
           }
           .stat-card-label {
             max-width: 310px !important;
@@ -640,6 +641,31 @@ export default function StackSection() {
 
           .sixdx-stack-h2 > div {
             justify-content: center;
+          }
+        }
+
+        @media (min-width: 768px) and (max-width: 1199px) {
+          .stat-circles-row {
+            max-width: calc(100vw - 80px) !important;
+            gap: clamp(24px, 4vw, 40px) !important;
+          }
+
+          .stat-card-item {
+            flex: 0 1 200px !important;
+            width: 200px !important;
+            min-width: 0 !important;
+          }
+
+          .stat-ring-scale {
+            transform: scale(0.78);
+            transform-origin: center;
+            margin: -28px 0 -20px;
+          }
+
+          .stat-card-label {
+            max-width: 200px !important;
+            font-size: 0.75rem !important;
+            line-height: 1.3 !important;
           }
         }
 
