@@ -195,6 +195,28 @@ const FLOW_FRAGMENT_SHADER = `
   }
 `
 
+// ── Capability guard ──────────────────────────────────────────────────────────
+// The shader runs a per-frame WebGL flowmap + simplex-noise pass, which is heavy
+// on weak GPUs. We keep it enabled on mobile but bail out on genuinely low-end
+// devices and whenever the user has asked for reduced motion.
+function prefersReducedMotion() {
+  return typeof window !== 'undefined'
+    && typeof window.matchMedia === 'function'
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
+function isLowEndDevice() {
+  if (typeof navigator === 'undefined') return false
+  // deviceMemory (Chrome/Android) is reported in GB. ≤ 2GB → treat as low-end.
+  const mem = (navigator as Navigator & { deviceMemory?: number }).deviceMemory
+  if (typeof mem === 'number' && mem > 0 && mem <= 2) return true
+  // Logical CPU cores. ≤ 2 → treat as low-end. (Kept conservative so typical
+  // mid-range phones, which report 6–8 cores, still get the effect.)
+  const cores = navigator.hardwareConcurrency
+  if (typeof cores === 'number' && cores > 0 && cores <= 2) return true
+  return false
+}
+
 function createShader(gl: WebGLRenderingContext, type: number, source: string) {
   const shader = gl.createShader(type)
   if (!shader) throw new Error('Unable to create shader')
@@ -286,6 +308,9 @@ export default function ShaderBg({ controls, className, style, disabledMediaQuer
     const canvas = canvasRef.current
     if (!canvas) return
     if (disabledMediaQuery && window.matchMedia(disabledMediaQuery).matches) return
+    // Low-end / reduced-motion guard: leave the canvas empty so the CSS fallback
+    // background shows through instead of running the WebGL loop.
+    if (prefersReducedMotion() || isLowEndDevice()) return
 
     const gl = canvas.getContext('webgl', { antialias: false, alpha: true })
     if (!gl) return

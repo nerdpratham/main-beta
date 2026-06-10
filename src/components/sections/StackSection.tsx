@@ -812,7 +812,6 @@ export default function StackSection() {
           >
             <ShaderBg
               controls={NUMBERS_SHADER_CONTROLS}
-              disabledMediaQuery="(max-width: 1199px)"
               style={{ position: 'absolute', inset: 0 }}
             />
 

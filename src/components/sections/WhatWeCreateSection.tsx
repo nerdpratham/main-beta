@@ -236,7 +236,7 @@ function StickyServices() {
         className="wwc-sticky-section"
         style={{ position: 'relative', minHeight: '100svh' }}
       >
-        <div ref={stickyRef} style={{ position: 'relative', height: '100svh', overflow: 'hidden', background: colors.white }}>
+        <div ref={stickyRef} className="wwc-sticky-pin" style={{ position: 'relative', height: '100svh', overflow: 'hidden', background: colors.white }}>
           {SERVICES.map((item, index) => (
             <div
               key={item.title}
