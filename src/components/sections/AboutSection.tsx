@@ -202,6 +202,7 @@ const ABOUT_CSS = `
   .about-magicpath {
     width: 100%;
     min-height: 1950px;
+    padding-top: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -430,6 +431,7 @@ const ABOUT_CSS = `
   @media (max-width: 1199px) {
     .about-magicpath {
       min-height: auto;
+      padding-top: 60px;
       background:
         linear-gradient(
           178.944767463296deg,
@@ -443,7 +445,7 @@ const ABOUT_CSS = `
     }
 
     .about-inner {
-      max-width: 810px;
+      max-width: none;
       padding: 20px;
     }
 
@@ -523,6 +525,7 @@ const ABOUT_CSS = `
   @media (max-width: 809px) {
     .about-magicpath {
       min-height: auto;
+      padding-top: 40px;
       background:
         linear-gradient(
           177.74973122637272deg,
@@ -536,7 +539,7 @@ const ABOUT_CSS = `
     }
 
     .about-inner {
-      max-width: 390px;
+      max-width: none;
       padding: 16px;
     }
 
