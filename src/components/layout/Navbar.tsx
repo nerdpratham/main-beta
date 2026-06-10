@@ -283,6 +283,22 @@ export default function Navbar() {
         }  /* desktop */
         .sixdx-logo-link { margin-right: 0; flex-shrink: 0; display: flex; align-items: center; }
 
+        /* Open-menu (overlay) logo. The overlay is a sibling of the header, so it
+           can't read the header's --nav-overlay-* vars — size it directly here.
+           Default = mobile (unchanged); tablet matches the desktop logo size. */
+        .sixdx-overlay-logo {
+          display: block;
+          height: 3rem;
+          width: 102px;
+          aspect-ratio: 102 / 40;
+        }
+
+        /* Overlay container padding (default = tablet, unchanged). On mobile this
+           is overridden to match the header bar so the logo doesn't shift on open. */
+        .sixdx-menu-overlay {
+          padding: 20px;
+        }
+
         .nav-pill-link {
           background-color: var(--nav-link-bg);
           backdrop-filter: blur(var(--nav-link-blur));
@@ -308,13 +324,14 @@ export default function Navbar() {
         /* Tablet: 810–1199px */
         @media (min-width: 810px) and (max-width: 1199px) {
           header.sixdx-nav {
-            --nav-logo-height: 32px;
+            /* Tablet logo matches the desktop size (header + open-menu overlay) */
+            --nav-logo-height: 2.75rem;
             --nav-padding-x: 24px;
             --nav-padding-y: 12px;
             --nav-overlay-padding: 20px;
             --nav-overlay-header-gap: 60px;
-            --nav-overlay-logo-width: 102px;
-            --nav-overlay-logo-height: 40px;
+            --nav-overlay-logo-width: 112px;
+            --nav-overlay-logo-height: 2.75rem;
             --nav-overlay-link-gap: 8px;
             --nav-overlay-link-size: 2.25rem;
             --nav-overlay-link-line-height: 1.1;
@@ -330,6 +347,11 @@ export default function Navbar() {
           }
           .sixdx-logo-link {
             margin-right: 0;
+          }
+          /* Open-menu logo matches the desktop header logo (44px tall, auto width) */
+          .sixdx-overlay-logo {
+            height: 2.75rem;
+            width: auto;
           }
         }
 
@@ -358,6 +380,14 @@ export default function Navbar() {
           }
           .sixdx-logo-link {
             margin-right: 0;
+          }
+          /* Open-menu logo + padding match the closed header so nothing shifts on open */
+          .sixdx-overlay-logo {
+            height: 32px;
+            width: auto;
+          }
+          .sixdx-menu-overlay {
+            padding: 10px 16px;
           }
           .sixdx-menu-cta .clarte-button {
             width: 100% !important;
@@ -481,6 +511,7 @@ export default function Navbar() {
         aria-modal="true"
         aria-label="Navigation menu"
         aria-hidden={!menuOpen}
+        className="sixdx-menu-overlay"
         style={{
           position: 'fixed',
           inset: 0,
@@ -492,7 +523,6 @@ export default function Navbar() {
           flexDirection: 'column',
           alignItems: 'stretch',
           gap: 'var(--nav-overlay-header-gap, 60px)',
-          padding: 'var(--nav-overlay-padding, 20px)',
           visibility: 'hidden',
           opacity: 0,
           boxSizing: 'border-box',
@@ -503,7 +533,7 @@ export default function Navbar() {
           className="sixdx-menu-bar"
           style={{
             display: 'flex',
-            alignItems: 'flex-start',
+            alignItems: 'center',
             justifyContent: 'space-between',
             width: '100%',
             flexShrink: 0,
@@ -517,10 +547,8 @@ export default function Navbar() {
           >
             <div
               aria-label="SixDX"
+              className="sixdx-overlay-logo"
             style={{
-                height: 'var(--nav-overlay-logo-height, 3rem)',
-                width: 'var(--nav-overlay-logo-width, 102px)',
-                aspectRatio: '102 / 40',
                 backgroundColor: '#ffffff',
                 WebkitMaskImage: 'url(/sixdx-logo.svg)',
                 maskImage: 'url(/sixdx-logo.svg)',
@@ -541,6 +569,8 @@ export default function Navbar() {
               border: 'none',
               cursor: 'pointer',
               padding: 0,
+              width: 44,
+              height: 44,
               color: '#ffffff',
               display: 'flex',
               alignItems: 'center',
