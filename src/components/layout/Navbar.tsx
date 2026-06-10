@@ -353,6 +353,10 @@ export default function Navbar() {
             height: 2.75rem;
             width: auto;
           }
+          /* Overlay padding matches the tablet header bar so the logo stays put on open */
+          .sixdx-menu-overlay {
+            padding: 12px 24px;
+          }
         }
 
         /* Mobile: ≤809px — smaller logo, tighter side padding (12px) */

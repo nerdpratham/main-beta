@@ -198,7 +198,7 @@ export const typography = {
   heroTitle: {
     family: fonts.helvetica,
     weight: 400,  
-    size: { desktop: '3.75rem', tablet: '3rem', mobile: '2.75rem' },
+    size: { desktop: '3.75rem', tablet: '4rem', mobile: '3rem' },
     lineHeight: { desktop: 1, tablet: 1, mobile: 1.05 },
     letterSpacing: { desktop: '-0.04em', tablet: '-0.04em', mobile: '-0.035em' },
   },

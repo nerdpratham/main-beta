@@ -24,7 +24,7 @@ const HERO_RESPONSIVE_CSS = `
     overflow-x: clip;
   }
   .hero-text {
-    width:          min(44rem, calc(100vw - 3.5rem));
+    width:          min(46rem, calc(100vw - 10rem));
   }
   .hero-scroll-shimmer {
     display: inline-block;
@@ -107,22 +107,24 @@ const HERO_RESPONSIVE_CSS = `
   }
   @media (max-width: 1199px) and (min-width: 810px) {
     .hero-text {
-      width:          min(39rem, calc(100vw - 3.5rem));
-      top:            auto !important;
-      bottom:         clamp(3rem, 9svh, 5.5rem) !important;
-      left:           50% !important;
-      transform:      translateX(-50%) !important;
+      width:          min(27rem, calc(100vw - 3rem)) !important;
+      max-width:      none !important;
+      font-size:      2.5rem !important;
+      top:            56% !important;
+      bottom:         auto !important;
+      left:           44% !important;
+      right:          auto !important;
+      transform:      translateY(-50%) !important;
       text-align:     left !important;
-      max-width:        30rem !important;
     }
   }
   @media (max-width: 809px) {
     .hero-text {
       width:          min(100%, calc(100vw - 2rem));
-      top:            auto !important;
-      bottom:         clamp(2.25rem, 8svh, 4.5rem) !important;
-      left:           50% !important;
-      transform:      translateX(-50%) !important;
+      top:            56% !important;
+      bottom:         auto !important;
+      left:           1rem !important;
+      transform:      translateY(-50%) !important;
       text-align:     left !important;
     }
   }
