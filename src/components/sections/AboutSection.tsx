@@ -236,7 +236,7 @@ const ABOUT_CSS = `
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 80px;
+    gap: 40px;
   }
 
   .about-copy-stack > h2 {
@@ -378,8 +378,9 @@ const ABOUT_CSS = `
   .about-differentiation {
     display: flex;
     flex-direction: column;
-    gap: 80px;
-    padding-bottom: 100px;
+    gap: 40px;
+    padding-bottom: 140px;
+     padding-top: 60px;
   }
 
   .about-feature-grid {
@@ -397,12 +398,12 @@ const ABOUT_CSS = `
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 80px;
+    gap: 40px;
   }
 
   .about-feature-column hr {
     width: 100%;
-    margin: 80px 0 0;
+    margin: 40px 0 0;
     border: 0;
     border-top: 1px solid rgba(255,255,255,0.2);
   }
@@ -450,12 +451,12 @@ const ABOUT_CSS = `
     }
 
     .about-intro {
-      gap: 60px;
+      gap: 40px;
     }
 
     .about-copy-stack {
       align-items: stretch;
-      gap: 32px;
+      gap: 24px;
     }
 
     .about-copy-stack > h2 {
@@ -493,15 +494,16 @@ const ABOUT_CSS = `
     }
 
     .about-differentiation {
-      gap: 80px;
-      padding: 20px 20px 80px;
+      gap: 24px;
+      padding: 20px 20px 60px;
     }
 
     .about-feature-grid {
       flex-wrap: nowrap;
       align-items: center;
       justify-content: flex-start;
-      gap: 32px;
+      spacebetween: normal;
+      gap: 40px;
     }
 
     .about-feature-column {
@@ -544,7 +546,7 @@ const ABOUT_CSS = `
     }
 
     .about-intro {
-      gap: 60px;
+      gap: 40px;
     }
 
     .about-copy-stack {
@@ -585,8 +587,8 @@ const ABOUT_CSS = `
     }
 
     .about-differentiation {
-      gap: 28px;
-      padding: 16px 16px 40px;
+      gap: 20px;
+      padding: 24px 16px 40px;
     }
 
     .about-feature-grid {
@@ -598,7 +600,7 @@ const ABOUT_CSS = `
     .about-feature-column {
       width: 100%;
       flex: none;
-      gap: 16px;
+      gap: 8px;
     }
 
     .about-feature-column hr {
