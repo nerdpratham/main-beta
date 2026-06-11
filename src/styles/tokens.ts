@@ -190,7 +190,7 @@ export const typography = {
   },
   metricNumber: {
     family: fonts.helvetica,
-    weight: 400,
+    weight: 200,
     size: { desktop: 'clamp(3.75rem, 5vw, 3.575rem)', tablet: 'clamp(2.25rem, 7vw, 3.25rem)', mobile: '2.5rem' },
     lineHeight: { desktop: 1, tablet: 1, mobile: 1 },
     letterSpacing: { desktop: '-0.03em', tablet: '-0.03em', mobile: '-0.03em' },

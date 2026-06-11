@@ -342,7 +342,7 @@ function StickyServices() {
                   <h3
                     style={{
                       ...textStyles.featureTitle,
-                      fontWeight: 500,
+                      fontWeight: 400,
                       color: colors.ink,
                       whiteSpace: 'nowrap',
                       flexShrink: 0,
