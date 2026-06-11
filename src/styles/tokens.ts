@@ -219,7 +219,7 @@ export const typography = {
   },
   projectTitle: {
     family: fonts.hn,
-    weight: 500,
+    weight: 400,
     size: { desktop: '3.75rem', tablet: '3rem', mobile: '2rem' },
     lineHeight: { desktop: 0.95, tablet: 1, mobile: 1.05 },
     letterSpacing: { desktop: '-0.03em', tablet: '-0.03em', mobile: '-0.025em' },

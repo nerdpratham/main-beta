@@ -355,6 +355,71 @@ export default function WorkSection() {
             opacity: 1;
           }
         }
+
+        /* ── Work Section responsive spacing ── */
+        @media (max-width: 1199px) {
+          .work-section {
+            min-height: auto !important;
+            padding: 60px 20px 20px !important;
+            gap: 40px !important;
+          }
+          .work-list {
+            gap: 32px !important;
+          }
+          .work-row {
+            gap: 28px !important;
+            min-height: auto !important;
+            align-items: flex-start !important;
+          }
+          .work-copy-col {
+            width: 45% !important;
+            gap: 12px !important;
+            min-height: auto !important;
+            justify-content: flex-start !important;
+          }
+          .work-media-frame {
+            width: min(49vw, 690px) !important;
+            height: min(34vw, 480px) !important;
+            flex-shrink: 0 !important;
+          }
+          .work-title {
+            white-space: normal !important;
+          }
+        }
+
+        @media (max-width: 809px) {
+          .work-section {
+            padding: 40px 16px 16px !important;
+            gap: 40px !important;
+            min-height: auto !important;
+          }
+          .work-list {
+            gap: 32px !important;
+          }
+          .work-row {
+            flex-direction: column !important;
+            min-height: auto !important;
+            gap: 12px !important;
+          }
+          .work-copy-col {
+            width: 100% !important;
+            min-height: auto !important;
+            gap: 1200px !important;
+          }
+          .work-description {
+            width: 100% !important;
+          }
+          .work-media-frame {
+            width: 100% !important;
+            height: auto !important;
+            aspect-ratio: 690 / 480 !important;
+            flex-shrink: 1 !important;
+          }
+          .work-title {
+            white-space: normal !important;
+            font-size: clamp(1.75rem, 7vw, 3rem) !important;
+          }
+        }
       `}</style>
       <div style={s.eyebrowWrap}>
         <h2 style={s.eyebrow}>SELECTED WORKS</h2>

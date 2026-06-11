@@ -304,53 +304,7 @@ header.sixdx-nav.theme-light {
   .about-image-frame { height: 240px !important; }
 }
 
-/* ── Work Section ───────────────────────────────────────────────────────── */
-@media (max-width: 1199px) {
-  .work-section {
-    min-height: auto !important;
-  }
-  .work-row {
-    gap: 28px !important;
-  }
-  .work-copy-col {
-    width: 45% !important;
-  }
-  .work-media-frame {
-    width: min(49vw, 690px) !important;
-    height: min(34vw, 480px) !important;
-  }
-  .work-title {
-    font-size: clamp(2.5rem, 5vw, 3.75rem) !important;
-    white-space: normal !important;
-  }
-}
-@media (max-width: 809px) {
-  .work-section {
-    padding: 60px 16px !important;
-    gap: 48px !important;
-  }
-  .work-list {
-    gap: 28px !important;
-  }
-  .work-row {
-    flex-direction: column !important;
-    min-height: auto !important;
-    gap: 28px !important;
-  }
-  .work-copy-col {
-    width: 100% !important;
-    min-height: auto !important;
-    gap: 32px !important;
-  }
-  .work-description {
-    width: 100% !important;
-  }
-  .work-media-frame {
-    width: 100% !important;
-    height: auto !important;
-    aspect-ratio: 690 / 480 !important;
-  }
-}
+/* ── Work Section — managed inside WorkSection.tsx <style> block ── */
 
 /* ── How SixDX Works Section ────────────────────────────────────────────── */
 @media (max-width: 809px) {
