@@ -235,7 +235,7 @@ export const typography = {
     family: fonts.hn,
     weight: 400,
     size: { desktop: '2.25rem', tablet: '2rem', mobile: '1.5rem' },
-    lineHeight: { desktop: 1.16, tablet: 1.05, mobile: 1.1 },
+    lineHeight: { desktop: 1, tablet: 1.05, mobile: 1.1 },
     letterSpacing: { desktop: '-0.03em', tablet: '-0.03em', mobile: '-0.025em' },
   },
   featureTitle: {

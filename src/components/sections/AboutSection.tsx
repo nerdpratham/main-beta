@@ -159,7 +159,7 @@ export default function AboutSection() {
         </div>
 
         <div className="about-visual-row">
-          <blockquote ref={quoteRef} style={{ ...textStyles.sectionHeading, color: colors.ink, fontWeight: 500 }}>
+          <blockquote ref={quoteRef} style={{ ...textStyles.sectionHeading, color: colors.ink, fontWeight: 400 }}>
             <span className={`about-heading-highlight about-quote-highlight${isQuoteHighlightActive ? ' is-active' : ''}`}>
               "<AnimatedHighlightText text={ABOUT_QUOTE_TEXT} />"
             </span>
