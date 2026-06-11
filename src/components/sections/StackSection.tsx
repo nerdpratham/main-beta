@@ -572,7 +572,7 @@ export default function StackSection() {
             min-height: 100svh !important;
             justify-content: flex-start !important;
             padding: calc(152px + env(safe-area-inset-top, 0px)) 20px 72px !important;
-            gap: 16px !important;
+            gap: 60px !important;
             z-index: 1;
             overflow: visible !important;
           }
@@ -581,13 +581,13 @@ export default function StackSection() {
             flex-direction: column !important;
             align-items: center !important;
             max-width: 100% !important;
-            gap: 72px !important;
+            gap: 40px !important;
           }
           .stat-card-item {
             flex: unset !important;
             width: 100% !important;
             align-items: center !important;
-            gap: 28px !important;
+            gap: 4px !important;
           }
           .stat-ring-scale {
             transform: scale(1.32);
@@ -842,7 +842,7 @@ export default function StackSection() {
             />
 
             <div className="stack-scene-content absolute inset-0 flex flex-col items-center justify-center"
-              style={{ padding: '48px 40px', gap: 48 }}>
+              style={{ padding: '40px 40px', gap: 80 }}>
 
               <div className="stack-text-area" style={{ textAlign: 'left', width: '100%', maxWidth: 720 }}>
                 <h2 ref={headingRef} className="stack-heading stack-reveal-heading" style={{

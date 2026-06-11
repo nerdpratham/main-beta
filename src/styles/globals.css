@@ -429,7 +429,7 @@ header.sixdx-nav.theme-light {
     padding: 28px !important;
   }
   .services-intro-heading {
-    font-size: 3.5rem !important;
+    font-size: 2rem !important;
   }
   .wwc-details-bar {
     align-items: center !important;
@@ -453,8 +453,8 @@ header.sixdx-nav.theme-light {
     align-items: center !important;
   }
   .services-intro-heading {
-    font-size: 2rem !important;
-    letter-spacing: -0.04em !important;
+    font-size: 1.5rem !important;
+    letter-spacing: -0.025em !important;
   }
   .wwc-details-bar {
     padding: 16px !important;

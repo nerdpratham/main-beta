@@ -113,7 +113,7 @@ const introStyles = {
   } satisfies CSSProperties,
 
   heading: {
-    ...textStyles.statement,
+    ...textStyles.sectionHeading,
     width: 720,
     maxWidth: '100%',
     color: colors.ink,
