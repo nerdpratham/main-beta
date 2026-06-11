@@ -268,7 +268,7 @@ export const typography = {
   },
   eyebrow: {
     family: fonts.hn,
-    weight: 500,
+    weight: 400,
     size: { desktop: '1rem', tablet: '0.9375rem', mobile: '0.875rem' },
     lineHeight: { desktop: 1.1, tablet: 1.1, mobile: 1.15 },
     letterSpacing: { desktop: '-0.03em', tablet: '-0.025em', mobile: '-0.02em' },

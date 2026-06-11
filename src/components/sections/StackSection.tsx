@@ -854,7 +854,6 @@ export default function StackSection() {
                 </h2>
                 <p ref={subtextRef} className="stack-subtext stack-reveal-copy" style={{
                   ...textStyles.sectionHeading,
-                  fontWeight: 100,
                   width: '100%',
                   maxWidth: '45rem',
                   height: 'auto',
