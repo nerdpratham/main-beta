@@ -32,3 +32,6 @@ dist-ssr
 
 # Test artifacts (screenshots, logs, reports)
 /test-artifacts/
+
+# ShipStudio metadata
+.shipstudio/
