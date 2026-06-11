@@ -425,6 +425,11 @@ header.sixdx-nav.theme-light {
 }
 
 @media (max-width: 1199px) {
+  .wwc-sticky-section,
+  .wwc-sticky-pin {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
   .services-intro-section {
     padding: 28px !important;
   }

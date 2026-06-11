@@ -659,7 +659,7 @@ export default function StackSection() {
           .stat-ring-scale {
             transform: scale(0.78);
             transform-origin: center;
-            margin: -28px 0 -20px;
+            margin: -60px 0 -32px;
           }
 
           .stat-card-label {

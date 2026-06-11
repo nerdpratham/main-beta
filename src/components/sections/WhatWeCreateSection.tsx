@@ -54,6 +54,16 @@ const SERVICES: ServiceItem[] = [
       alt: 'Plant familiarisation',
     },
   },
+  {
+    title: 'AR/VR Experiences',
+    body:
+      'Human fatality and accident reconstruction animations depict real industrial and road accidents in realistic 3D settings. They illustrate how incidents happened, highlight unsafe actions, and suggest prevention methods. These animations enhance safety awareness, boost compliance, and help reduce repeat human errors.',
+    media: {
+      type: 'image',
+      src: 'https://images.unsplash.com/photo-1780789594881-dce91660ac13?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      alt: 'Plant familiarisation',
+    },
+  },
 ]
 
 const T = {
@@ -234,9 +244,9 @@ function StickyServices() {
         aria-label="Services — sticky scroll"
         data-theme="dark"
         className="wwc-sticky-section"
-        style={{ position: 'relative', minHeight: '100svh' }}
+        style={{ position: 'relative', minHeight: '100svh', width: '100%' }}
       >
-        <div ref={stickyRef} className="wwc-sticky-pin" style={{ position: 'relative', height: '100svh', overflow: 'hidden', background: colors.white }}>
+        <div ref={stickyRef} className="wwc-sticky-pin" style={{ position: 'relative', height: '100svh', overflow: 'hidden', background: colors.white, width: '100%' }}>
           {SERVICES.map((item, index) => (
             <div
               key={item.title}
