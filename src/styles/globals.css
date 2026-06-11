@@ -463,15 +463,33 @@ header.sixdx-nav.theme-light {
   }
   .wwc-details-bar {
     padding: 16px !important;
+    align-items: flex-start !important;
+  }
+  .wwc-details-inner {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+  .wwc-service-title {
+    white-space: normal !important;
+    flex-shrink: 1 !important;
+    width: 100% !important;
+  }
+  .wwc-details-body {
+    width: 100% !important;
+    flex-shrink: 1 !important;
   }
   /* Pinned panel must cover the large (URL-bar-hidden) viewport, otherwise the
      dark <main> background shows through below it as a black strip while the
      section is pinned during scroll. */
   .wwc-sticky-section {
     min-height: 100lvh !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
   .wwc-sticky-pin {
     height: 100lvh !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
   .wwc-service-media {
     height: 58lvh !important;

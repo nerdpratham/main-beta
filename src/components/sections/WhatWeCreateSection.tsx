@@ -350,6 +350,7 @@ function StickyServices() {
                   }}
                 >
                   <h3
+                    className="wwc-service-title"
                     style={{
                       ...textStyles.featureTitle,
                       fontWeight: 400,
