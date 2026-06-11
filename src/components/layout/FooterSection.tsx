@@ -14,20 +14,13 @@
 //   On close : form slides out + video resumes
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { useRef, useState, useEffect, type FormEvent, type ChangeEvent } from 'react'
-import { gsap, ScrollTrigger } from '../../animations/gsap.config'
+import { useRef, useState, type FormEvent, type ChangeEvent } from 'react'
 import { colors, textStyles } from '../../styles/tokens'
 import PrimaryButton from '../ui/PrimaryButton'
 
 // ── Video ─────────────────────────────────────────────────────────────────────
 const MACHINE_VIDEO    = '/video/Machaine000.Png.mp41111.webm'
 const NEWSLETTER_VIDEO = MACHINE_VIDEO
-
-// ── Frame sequence (footer scrub) ────────────────────────────────────────────
-const FRAME_COUNT = 140
-const FRAME_URLS  = Array.from({ length: FRAME_COUNT }, (_, i) =>
-  `/Picflow%20Images%20May%2028/machaine000.png${String(i + 1).padStart(4, '0')}.webp`
-)
 
 // ── Footer gradient ───────────────────────────────────────────────────────────
 // Extracted from Figma. Edit the color stops here to adjust the gradient.
@@ -70,13 +63,6 @@ const OFFICES = [
     phone: '+971 58 522 9400, +971 58556 6837',
   },
 ]
-
-const POLICY_LINKS = [
-  { label: 'Privacy Policy', href: '#' },
-  { label: 'Terms & Conditions', href: '#' },
-]
-
-const COPYRIGHT = '© 2026 SixD. All rights reserved'
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // ── NEWSLETTER CARD
@@ -266,164 +252,6 @@ function NewsletterCard() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// ── FOOTER SCROLL-SCRUB — canvas frame sequence
-// ═══════════════════════════════════════════════════════════════════════════════
-
-function FooterVideoScrub() {
-  const wrapperRef = useRef<HTMLDivElement>(null)
-  const stickyRef = useRef<HTMLDivElement>(null)
-  const canvasRef  = useRef<HTMLCanvasElement>(null)
-
-  useEffect(() => {
-    const wrapper = wrapperRef.current
-    const sticky = stickyRef.current
-    const canvas  = canvasRef.current
-    if (!wrapper || !sticky || !canvas) return
-
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    // ── Preload all frames eagerly ─────────────────────────────────────────
-    const images: HTMLImageElement[] = FRAME_URLS.map(src => {
-      const img = new Image()
-      img.src = src
-      return img
-    })
-
-    // ── Resize canvas internal resolution to match CSS size ───────────────
-    const syncSize = () => {
-      const dpr = window.devicePixelRatio || 1
-      const w = canvas.offsetWidth  * dpr
-      const h = canvas.offsetHeight * dpr
-      // Only reassign when dimensions actually change — assigning always clears the canvas
-      if (canvas.width !== w || canvas.height !== h) {
-        canvas.width  = w
-        canvas.height = h
-      }
-    }
-    syncSize()
-    const ro = new ResizeObserver(syncSize)
-    ro.observe(canvas)
-
-    // ── Draw a frame with object-fit:cover behaviour ───────────────────────
-    const drawFrame = (img: HTMLImageElement) => {
-      if (!img.complete || img.naturalWidth === 0) return
-      const cw = canvas.width,  ch = canvas.height
-      const iw = img.naturalWidth, ih = img.naturalHeight
-      let sx, sy, sw, sh
-      if (iw / ih > cw / ch) {
-        sh = ih; sw = sh * (cw / ch)
-        sx = (iw - sw) / 2; sy = 0
-      } else {
-        sw = iw; sh = sw * (ch / cw)
-        sx = 0; sy = (ih - sh) / 2
-      }
-      ctx.clearRect(0, 0, cw, ch)
-      ctx.drawImage(img, sx, sy, sw, sh, 0, 0, cw, ch)
-    }
-
-    // ── Find the nearest loaded frame to avoid blank canvas during load ────
-    const drawBestFrame = (targetIdx: number) => {
-      if (images[targetIdx].complete && images[targetIdx].naturalWidth > 0) {
-        drawFrame(images[targetIdx])
-        return
-      }
-      for (let d = 1; d < FRAME_COUNT; d++) {
-        const lo = images[Math.max(0, targetIdx - d)]
-        if (lo.complete && lo.naturalWidth > 0) { drawFrame(lo); return }
-        const hi = images[Math.min(FRAME_COUNT - 1, targetIdx + d)]
-        if (hi.complete && hi.naturalWidth > 0) { drawFrame(hi); return }
-      }
-    }
-
-    const setScale    = gsap.quickSetter(canvas, 'scale')
-    drawBestFrame(0)
-
-    const trigger = ScrollTrigger.create({
-      trigger: wrapper,
-      start: 'top top',
-      end: () => `+=${window.innerHeight * 3}`,
-      pin: sticky,
-      pinSpacing: true,
-      scrub: 0.75,
-      anticipatePin: 1,
-      invalidateOnRefresh: true,
-      refreshPriority: -1,
-      onUpdate: self => {
-        const progress = self.progress
-        setScale(1 + progress * 0.6)
-        const idx = Math.min(FRAME_COUNT - 1, Math.floor(progress * (FRAME_COUNT - 1)))
-        drawBestFrame(idx)
-      },
-    })
-
-    const refreshId = window.requestAnimationFrame(() => ScrollTrigger.refresh())
-
-    return () => {
-      window.cancelAnimationFrame(refreshId)
-      trigger.kill()
-      gsap.killTweensOf(canvas)
-      ro.disconnect()
-      ScrollTrigger.refresh()
-    }
-  }, [])
-
-  return (
-    <div ref={wrapperRef} data-footer-scrub data-theme="dark" style={{ minHeight: '100svh', background: '#1c0b05' }}>
-      <div ref={stickyRef} style={{
-        position: 'relative', height: '100svh', overflow: 'hidden',
-        background: 'linear-gradient(360deg, #3d1508 0%, #7a2d10 28%, #c45020 55%, #7a2d10 78%, #1c0b05 100%)',
-      }}>
-        <canvas
-          ref={canvasRef}
-          aria-hidden="true"
-          style={{ width: '100%', height: '100%', display: 'block', transformOrigin: '62% 40%', willChange: 'transform' }}
-        />
-
-        <div
-          className="footer-bottom-bar"
-          style={{
-            position: 'absolute',
-            left: 28,
-            right: 28,
-            bottom: 14,
-            zIndex: 2,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            gap: 16,
-            pointerEvents: 'auto',
-          }}
-        >
-          <div style={{ display: 'flex', gap: 24 }}>
-            {POLICY_LINKS.map(link => (
-              <a
-                key={link.label}
-                href={link.href}
-                style={{
-                  ...textStyles.bodySmall,
-                  color: 'rgba(255,255,255,0.5)',
-                  textDecoration: 'none',
-                }}
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
-
-          <p style={{
-            ...textStyles.bodySmall,
-            color: 'rgba(255,255,255,0.5)',
-          }}>
-            {COPYRIGHT}
-          </p>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
 // ── MAIN COMPONENT
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -550,9 +378,6 @@ export default function FooterSection() {
         </div>
 
       </div>{/* end GRADIENT BLOCK */}
-
-      {/* ── Scroll-scrubbed frame animation — seamless continuation of footer gradient ── */}
-      <FooterVideoScrub />
 
     </footer>
   )
