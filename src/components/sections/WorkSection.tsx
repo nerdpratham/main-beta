@@ -142,7 +142,7 @@ const s = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    gap: 6,
+    gap: 16,
   } satisfies CSSProperties,
 
   title: {
@@ -152,7 +152,6 @@ const s = {
 
   description: {
     ...textStyles.bodyLarge,
-    width: 334.426,
     textTransform: 'capitalize',
   } satisfies CSSProperties,
 
