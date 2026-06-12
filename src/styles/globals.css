@@ -473,7 +473,7 @@ header.sixdx-nav.theme-light {
   .footer-offices  { width: 100% !important; }
 }
 @media (max-width: 809px) {
-  .footer-gradient-block   { padding: 60px 16px 40px !important; gap: 80px !important; }
+  .footer-gradient-block   { padding: 60px 16px 40px !important; gap: var(--footer-mobile-gradient-gap, 80px) !important; }
   .footer-bottom-bar       { padding-left: 16px !important; padding-right: 16px !important; }
   .footer-newsletter-card  { width: 100% !important; height: auto !important; aspect-ratio: 329 / 186; }
 }

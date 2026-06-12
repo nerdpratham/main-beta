@@ -312,7 +312,16 @@ export default function FooterSection() {
 	          will-change: transform, clip-path, opacity;
 	        }
 
+	        .footer-tagline {
+	          width: 100%;
+	          max-width: 36rem;
+	        }
+
 	        @media (min-width: 768px) and (max-width: 1024px) {
+	          .footer-tagline {
+	            max-width: 30rem;
+	          }
+
 	          .footer-main-row {
 	            flex-direction: column !important;
 	          }
@@ -320,6 +329,75 @@ export default function FooterSection() {
 	          .footer-newsletter-card {
 	            width: 100% !important;
 	            max-width: none !important;
+	          }
+	        }
+
+	        @media (max-width: 767px) {
+	          .footer-gradient-block {
+	            --footer-mobile-gradient-gap: 3rem;
+	          }
+
+	          .footer-tagline {
+	            max-width: min(100%, 19rem);
+	          }
+
+	          .footer-cta-block {
+	            gap: rem !important;
+	          }
+
+	          .footer-cta-button {
+	            align-self: stretch !important;
+	            width: 100% !important;
+	            justify-content: space-between;
+	            background-color: ${colors.brand1} !important;
+	            color: ${colors.white} !important;
+	            --clarte-hover-bg: ${colors.brand1};
+	            --clarte-hover-text: ${colors.white};
+	          }
+
+	          .footer-cta-button .clarte-button-bg {
+	            transform: translateY(101%) !important;
+	            transition: none !important;
+	          }
+
+	          .footer-cta-button:hover .clarte-button-text,
+	          .footer-cta-button:hover .clarte-button-text-clone,
+	          .footer-cta-button:hover .clarte-button-arrow,
+	          .footer-cta-button:hover .clarte-button-arrow-clone {
+	            transform: translateY(0) !important;
+	          }
+
+	          .footer-cta-button .clarte-button-text-clone,
+	          .footer-cta-button .clarte-button-arrow-clone {
+	            color: ${colors.white} !important;
+	          }
+
+	          .footer-offices {
+	            gap: 2rem !important;
+	          }
+
+	          .footer-office-card {
+	            gap: 1rem !important;
+	          }
+
+	          .footer-office-region {
+	            font-size: 1.5rem !important;
+	            line-height: 1 !important;
+	            color: ${colors.white} !important;
+	          }
+
+	          .footer-office-divider {
+	            background: ${colors.white08} !important;
+	          }
+
+	          .footer-office-details {
+	            gap: 0.75rem !important;
+	          }
+
+	          .footer-office-copy {
+	            font-size: 1rem !important;
+	            line-height: 1.35 !important;
+	            color: ${colors.white50} !important;
 	          }
 	        }
 
@@ -362,6 +440,7 @@ export default function FooterSection() {
             bottom: 16px !important;
             flex-direction: column !important;
             align-items: flex-start !important;
+
           }
         }
       `}</style>
@@ -373,11 +452,11 @@ export default function FooterSection() {
                   + Main Container (offices + newsletter)
           Padding matches original footer: 100px top, 28px sides, 60px bottom.
       ══════════════════════════════════════════════════════════════════════ */}
-      <div data-theme="light" className="footer-gradient-block flex flex-col gap-10 md:gap-[200px] w-full" style={{
+      <div data-theme="light" className="footer-gradient-block flex flex-col gap-8 md:gap-[200px] w-full" style={{
         background: FOOTER_GRADIENT,
         paddingTop: 100,
         paddingRight: 20,
-        paddingBottom: 14,
+        paddingBottom: 0,
         paddingLeft: 20,
         boxSizing: 'border-box',
       }}>
@@ -386,19 +465,17 @@ export default function FooterSection() {
         <div className="flex flex-col gap-16 relative z-10">
 
           {/* CTA block: tagline + button */}
-          <div className="flex flex-col gap-6">
-            <h2 className="footer-tagline" style={{
-              ...textStyles.sectionHeading,
-              color: colors.ink,
-              width: 878,
-              maxWidth: '36rem',
-            }}>
+	          <div className="footer-cta-block flex flex-col gap-6">
+	            <h2 className="footer-tagline" style={{
+	              ...textStyles.sectionHeading,
+	              color: colors.ink,
+	            }}>
               {TAGLINE}
             </h2>
 
-            <div>
-              <PrimaryButton label="Get in touch" href="#contact" variant="white" />
-            </div>
+	            <div>
+	              <PrimaryButton label="Get in touch" href="#contact" variant="white" className="footer-cta-button" />
+	            </div>
           </div>
 
           {/* Menu Container — nav pills */}
@@ -436,25 +513,25 @@ export default function FooterSection() {
 
           {/* Office info columns */}
           <div className="footer-offices flex flex-col md:flex-row gap-10 md:gap-[28px] w-full md:w-[560px] shrink-0">
-            {OFFICES.map(office => (
-              <div
-                key={office.region}
-                className="flex flex-col gap-4 flex-1 min-w-0"
-              >
-                <p style={{ ...textStyles.featureTitle, color: colors.white, whiteSpace: 'nowrap' }}>
-                  {office.region}
-                </p>
-                <div style={{ width: '100%', height: 1, background: colors.white08, flexShrink: 0 }} />
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  <p style={{ ...textStyles.label, color: colors.white50 }}>
-                    {office.company}<br />{office.address}
-                  </p>
-                  <p style={{ ...textStyles.label, color: colors.white50 }}>
-                    {office.email}
-                  </p>
-                  <p style={{ ...textStyles.label, color: colors.white50 }}>
-                    {office.phone}
-                  </p>
+	            {OFFICES.map(office => (
+	              <div
+	                key={office.region}
+	                className="footer-office-card flex flex-col gap-4 flex-1 min-w-0"
+	              >
+	                <p className="footer-office-region" style={{ ...textStyles.featureTitle, color: colors.white, whiteSpace: 'nowrap' }}>
+	                  {office.region}
+	                </p>
+	                <div className="footer-office-divider" style={{ width: '100%', height: 1, background: colors.white08, flexShrink: 0 }} />
+	                <div className="footer-office-details" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+	                  <p className="footer-office-copy" style={{ ...textStyles.label, color: colors.white50 }}>
+	                    {office.company}<br />{office.address}
+	                  </p>
+	                  <p className="footer-office-copy" style={{ ...textStyles.label, color: colors.white50 }}>
+	                    {office.email}
+	                  </p>
+	                  <p className="footer-office-copy" style={{ ...textStyles.label, color: colors.white50 }}>
+	                    {office.phone}
+	                  </p>
                 </div>
               </div>
             ))}
