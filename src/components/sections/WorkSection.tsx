@@ -449,6 +449,15 @@ export default function WorkSection() {
             white-space: normal !important;
             font-size: clamp(1.75rem, 7vw, 3rem) !important;
           }
+
+          /* ── Mobile reorder: video → heading → body ───────────────────────
+             display:contents dissolves the wrapper divs so their children
+             become direct flex children of .work-row, then order positions them */
+          .work-copy-col   { display: contents !important; }
+          .work-copy-stack { display: contents !important; }
+          .work-media-frame { order: 1; }
+          .work-title       { order: 2; }
+          .work-description { order: 3; }
         }
       `}</style>
       <div style={s.eyebrowWrap}>
@@ -463,7 +472,7 @@ export default function WorkSection() {
             <div key={`${item.title}-${index}`} className="work-row-group">
               <article className="work-row" style={s.row}>
                 <div className="work-copy-col" style={s.copyCol}>
-                  <div style={{ ...s.copyStack, color: textColor }}>
+                  <div className="work-copy-stack" style={{ ...s.copyStack, color: textColor }}>
                     <h3
                       ref={(el) => { titleRefs.current[index] = el }}
                       data-work-title-index={index}
