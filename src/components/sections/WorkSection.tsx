@@ -142,7 +142,7 @@ const s = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    gap: 16,
+    gap: 8,
   } satisfies CSSProperties,
 
   title: {
@@ -424,17 +424,17 @@ export default function WorkSection() {
             min-height: auto !important;
           }
           .work-list {
-            gap: 32px !important;
+            gap: 40px !important;
           }
           .work-row {
             flex-direction: column !important;
             min-height: auto !important;
-            gap: 12px !important;
+            gap: 20px !important;
           }
           .work-copy-col {
             width: 100% !important;
             min-height: auto !important;
-            gap: 1200px !important;
+            gap: 20px !important;
           }
           .work-description {
             width: 100% !important;
@@ -450,14 +450,13 @@ export default function WorkSection() {
             font-size: clamp(1.75rem, 7vw, 3rem) !important;
           }
 
-          /* ── Mobile reorder: video → heading → body ───────────────────────
-             display:contents dissolves the wrapper divs so their children
-             become direct flex children of .work-row, then order positions them */
+          /* ── Mobile reorder: video → [heading + body grouped] ────────────
+             display:contents dissolves only .work-copy-col (outer wrapper).
+             .work-copy-stack stays as a flex container, keeping heading and
+             body together. order then places video first, text group second. */
           .work-copy-col   { display: contents !important; }
-          .work-copy-stack { display: contents !important; }
           .work-media-frame { order: 1; }
-          .work-title       { order: 2; }
-          .work-description { order: 3; }
+          .work-copy-stack  { order: 2; width: 100%; }
         }
       `}</style>
       <div style={s.eyebrowWrap}>
