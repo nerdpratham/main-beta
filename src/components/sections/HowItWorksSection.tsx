@@ -173,13 +173,13 @@ const s = {
     position: 'relative',
     height: 508,
     minWidth: 0,
-    padding: 24,
     borderRadius: 2,
     overflow: 'hidden',
     boxSizing: 'border-box',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
+    gap: 0,
     alignItems: 'flex-start',
     textAlign: 'left',
     backgroundColor: colors.brand1,
@@ -282,6 +282,8 @@ export default function HowItWorksSection() {
   return (
     <section id="how-it-works" className="how-it-works-section" data-theme="dark" style={s.section}>
       <style>{`
+        .how-it-works-wide-card { padding: 24px; }
+
         @media (max-width: 1024px) {
           .how-it-works-cards {
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
@@ -318,6 +320,7 @@ export default function HowItWorksSection() {
           .how-it-works-wide-card {
             height: min(110vw, 508px) !important;
             min-height: 420px !important;
+            padding: 16px !important;
           }
 
           /* Let each card grow to fit its content and stack the title, image
@@ -368,6 +371,23 @@ export default function HowItWorksSection() {
             max-width: 100% !important;
             object-fit: contain !important;
           }
+
+          /* ── WIDE CARD GRADIENT OVERLAY — mobile controls ─────────────────
+             Edit these values to adjust the gradient overlay on the two wide
+             cards (CGI Production & Review / Compliance) on mobile:
+               height   — how far the gradient climbs from the bottom
+               opacity  — overall darkness (0 = invisible, 1 = full)
+               background — gradient: top color → bottom color, stop positions
+          ────────────────────────────────────────────────────────────────── */
+          .how-wide-gradient {
+            height: 70% !important;
+            opacity: 1 !important;
+            background: linear-gradient(
+              180deg,
+              rgba(28, 11, 5, 0) 0%,
+              rgba(28, 11, 5, 0.97) 45%
+            ) !important;
+          }
         }
       `}</style>
 
@@ -407,9 +427,9 @@ export default function HowItWorksSection() {
             {HOW_STEPS.filter(isWideStep).map(step => (
               <article className="how-it-works-wide-card" key={step.title} style={s.wideCard}>
                 <img src={step.bg} alt="" aria-hidden="true" style={s.wideCardBg} />
-                <div aria-hidden="true" style={s.wideCardGradient} />
-                <h3 style={s.cardTitle}>{step.title}</h3>
-                <p style={s.cardCopy}>{step.body}</p>
+                <div aria-hidden="true" className="how-wide-gradient" style={s.wideCardGradient} />
+                <h3 className="how-card-title how-wide-title" style={s.cardTitle}>{step.title}</h3>
+                <p className="how-card-copy how-wide-copy" style={s.cardCopy}>{step.body}</p>
               </article>
             ))}
           </div>
