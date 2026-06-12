@@ -429,7 +429,7 @@ export default function WorkSection() {
           .work-row {
             flex-direction: column !important;
             min-height: auto !important;
-            gap: 20px !important;
+            gap: 16px !important;
           }
           .work-copy-col {
             width: 100% !important;
