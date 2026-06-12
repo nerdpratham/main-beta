@@ -152,6 +152,57 @@ export default function ContactSection() {
       }}
     >
 
+      <style>{`
+        /* ── CONTACT HEADING — max-width per viewport ──────────────────────
+           Desktop  ≥ 1025px  |  Tablet  768–1024px  |  Mobile  ≤ 767px    */
+        .contact-heading { max-width: 520px; }                /* desktop  — edit here */
+
+        /* ── TABLET + MOBILE — stacked layout: heading → form → offices ───
+           display:contents on .contact-left dissolves it as a layout box
+           so its children (heading + offices) become direct flex children
+           of the section and can be reordered with CSS order.             */
+        @media (max-width: 1024px) {
+          .contact-heading { max-width: 420px; }              /* tablet   — edit here */
+
+          .contact-section {
+            flex-direction: column !important;
+            gap: 40px;
+          }
+
+          .contact-left {
+            display: contents !important;
+          }
+
+          .contact-heading {
+            order: 1;
+          }
+
+          .contact-form {
+            order: 2;
+            width: 100% !important;
+            max-width: 100% !important;
+          }
+
+          .contact-offices {
+            order: 3;
+            flex-direction: row !important;
+          }
+        }
+
+        @media (max-width: 767px) {
+          .contact-heading { max-width: 280px; }              /* mobile   — edit here */
+
+          .contact-section {
+            padding: 72px 16px !important;
+          }
+
+          .contact-offices {
+            flex-direction: column !important;
+            gap: 32px !important;
+          }
+        }
+      `}</style>
+
       {/* ════════════════════════════════════════════════════════════════════
           LEFT COLUMN — heading + office locations
           flex:1, stretched to match form height via justify-content:space-between
@@ -169,7 +220,7 @@ export default function ContactSection() {
       }}>
 
         {/* Semantic h2 using the contactHeading visual token */}
-        <h2 style={{
+        <h2 className="contact-heading" style={{
           ...textStyles.contactHeading,
           color: colors.white,
         }}>
