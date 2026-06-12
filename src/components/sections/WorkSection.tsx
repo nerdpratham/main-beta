@@ -142,7 +142,7 @@ const s = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    gap: 4,
+    gap: 6,
   } satisfies CSSProperties,
 
   title: {
