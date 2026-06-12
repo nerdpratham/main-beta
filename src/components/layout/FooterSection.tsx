@@ -410,6 +410,10 @@ export default function FooterSection() {
 	            line-height: 1.35 !important;
 	            color: ${colors.white50} !important;
 	          }
+	          
+	          .footer-nav-pill {
+	            background: rgba(28, 11, 5, 0.2) !important;
+	          }
 	        }
 
 	        @keyframes footer-newsletter-reveal-up {

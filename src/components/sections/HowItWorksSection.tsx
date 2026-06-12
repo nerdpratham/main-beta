@@ -289,6 +289,10 @@ export default function HowItWorksSection() {
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
           }
 
+          .how-it-works-cards .how-it-works-card:last-child {
+            grid-column: 1 / -1;   /* ← makes 3rd card full width on tablet */
+          }
+
           .how-it-works-wide-cards {
             grid-template-columns: 1fr !important;
           }

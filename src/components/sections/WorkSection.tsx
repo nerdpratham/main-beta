@@ -8,6 +8,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { textStyles } from '../../styles/tokens'
+import { gsap } from 'gsap'
 
 const WORK_TEXT_COLOR = '#0A0402'
 
@@ -206,8 +207,38 @@ const s = {
 }
 
 function WorkMedia({ src, title, tags }: { src: string; title: string; tags: string[] }) {
+  const frameRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const el = frameRef.current
+    if (!el) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return
+        observer.disconnect()
+        // fromTo: sets hidden state and animates to visible in one call —
+        // no separate gsap.set needed, no risk of elements staying invisible
+        gsap.fromTo(
+          el,
+          { clipPath: 'inset(0 0 0 100%)' },
+          { clipPath: 'inset(0 0 0 0%)', duration: 1.8, ease: 'expo.out' },
+        )
+      },
+      { threshold: 0 },
+    )
+
+    observer.observe(el)
+
+    return () => {
+      observer.disconnect()
+      gsap.killTweensOf(el)
+      gsap.set(el, { clearProps: 'clipPath' })
+    }
+  }, [])
+
   return (
-    <div className="work-media-frame" style={s.mediaFrame}>
+    <div ref={frameRef} className="work-media-frame" style={s.mediaFrame}>
       <video
         src={src}
         autoPlay

@@ -16,9 +16,10 @@
 // same on both variants.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { useRef } from 'react'
-import type { CSSProperties } from 'react'
+import { useEffect, useRef } from 'react'
+import type { CSSProperties, RefObject } from 'react'
 import { colors, textStyles } from '../../styles/tokens'
+import { gsap } from 'gsap'
 
 // ── Internal defaults ─────────────────────────────────────────────────────────
 const CARD_RADIUS  = 2
@@ -110,6 +111,33 @@ export default function WorkCard({
   ...media
 }: WorkCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
+  const cardRef  = useRef<HTMLElement | null>(null)
+
+  useEffect(() => {
+    const el = cardRef.current
+    if (!el) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return
+        observer.disconnect()
+        gsap.fromTo(
+          el,
+          { clipPath: 'inset(0 0 0 100%)' },
+          { clipPath: 'inset(0 0 0 0%)', duration: 1.8, ease: 'expo.out' },
+        )
+      },
+      { threshold: 0 },
+    )
+
+    observer.observe(el)
+
+    return () => {
+      observer.disconnect()
+      gsap.killTweensOf(el)
+      gsap.set(el, { clearProps: 'clipPath' })
+    }
+  }, [])
 
   const handleMouseEnter = () => {
     const v = videoRef.current
@@ -240,6 +268,7 @@ export default function WorkCard({
   if (href) {
     return (
       <a
+        ref={cardRef as unknown as RefObject<HTMLAnchorElement>}
         href={href}
         target={target}
         style={root}
@@ -255,6 +284,7 @@ export default function WorkCard({
 
   return (
     <div
+      ref={cardRef as unknown as RefObject<HTMLDivElement>}
       style={root}
       className={className}
       onClick={onClick}

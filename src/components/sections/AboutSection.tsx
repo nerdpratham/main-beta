@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { gsap } from 'gsap'
 import type { CSSProperties } from 'react'
 import PrimaryButton from '../ui/PrimaryButton'
 import { colors, textStyles } from '../../styles/tokens'
@@ -91,6 +92,7 @@ export default function AboutSection() {
   const [isQuoteHighlightActive, setIsQuoteHighlightActive] = useState(false)
   const headingRef = useRef<HTMLHeadingElement | null>(null)
   const quoteRef = useRef<HTMLQuoteElement | null>(null)
+  const imageRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     const candidates: Array<{ element: Element | null; setActive: (value: boolean) => void }> = [
@@ -134,6 +136,33 @@ export default function AboutSection() {
     }
   }, [])
 
+  // ── Image reveal — GSAP right-to-left wipe ───────────────────────────────────
+  useEffect(() => {
+    const el = imageRef.current
+    if (!el) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return
+        observer.disconnect()
+        gsap.fromTo(
+          el,
+          { clipPath: 'inset(0 0 0 100%)' },
+          { clipPath: 'inset(0 0 0 0%)', duration: 1.8, ease: 'expo.out' },
+        )
+      },
+      { threshold: 0 },
+    )
+
+    observer.observe(el)
+
+    return () => {
+      observer.disconnect()
+      gsap.killTweensOf(el)
+      gsap.set(el, { clearProps: 'clipPath' })
+    }
+  }, [])
+
   const openSixD = () => {
     window.open('https://sixdengineering.com', '_blank', 'noopener,noreferrer')
   }
@@ -165,7 +194,12 @@ export default function AboutSection() {
             </span>
           </blockquote>
 
-          <div className="about-image" role="img" aria-label="Industrial environment visual" />
+          <div
+            ref={imageRef}
+            className="about-image"
+            role="img"
+            aria-label="Industrial environment visual"
+          />
         </div>
       </div>
 
@@ -373,6 +407,7 @@ const ABOUT_CSS = `
       url("${ABOUT_IMAGE}");
     background-size: cover;
     background-position: center;
+    will-change: clip-path;
   }
 
   .about-differentiation {
