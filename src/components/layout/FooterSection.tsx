@@ -42,10 +42,10 @@ const FOOTER_GRADIENT = `linear-gradient(
 
 const FOOTER_MOBILE_GRADIENT = `linear-gradient(
   to bottom,
-  #ffffff    0.0%,
-  #faece8    4.6%,
-  #f3d4c9    8.0%,
-  #e49f88    14.0%,
+  #ffffff    2.2%,
+  #faece8    7.7%,
+  #f3d4c9    13.3%,
+  #e49f88    18.2%,
   #d05b34    22.8%,
   #1c0b05    59.2%
 )`
