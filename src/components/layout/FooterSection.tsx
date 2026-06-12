@@ -32,12 +32,22 @@ const NEWSLETTER_INPUT_BLUR = '6px'
 // Extracted from Figma. Edit the color stops here to adjust the gradient.
 const FOOTER_GRADIENT = `linear-gradient(
   to bottom,
-  #ffffff    8.6%,
-  #faece8   14.9%,
-  #f3d4c9   20.7%,
-  #e49f88   28.7%,
-  #d05b34   38.2%,
-  #1c0b05   68.0%
+  rgba(255, 255, 255, 1) 0%,
+  rgba(250, 236, 232, 1) 16%,
+  rgba(243, 212, 201, 1) 28%,
+  rgba(228, 159, 136, 1) 39%,
+  rgba(208, 91, 52, 1) 56%,
+  rgba(28, 11, 5, 1) 100%
+)`
+
+const FOOTER_MOBILE_GRADIENT = `linear-gradient(
+  to bottom,
+  #ffffff    0.0%,
+  #faece8    4.6%,
+  #f3d4c9    8.0%,
+  #e49f88    14.0%,
+  #d05b34    22.8%,
+  #1c0b05    59.2%
 )`
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -335,6 +345,7 @@ export default function FooterSection() {
 	        @media (max-width: 767px) {
 	          .footer-gradient-block {
 	            --footer-mobile-gradient-gap: 3rem;
+	            background: ${FOOTER_MOBILE_GRADIENT} !important;
 	          }
 
 	          .footer-tagline {
@@ -342,7 +353,7 @@ export default function FooterSection() {
 	          }
 
 	          .footer-cta-block {
-	            gap: rem !important;
+	            gap: 1.5rem !important;
 	          }
 
 	          .footer-cta-button {
