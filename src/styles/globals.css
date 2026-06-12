@@ -277,11 +277,13 @@ header.sixdx-nav.theme-light {
 
 /* ── Footer nav pills ───────────────────────────────────────────────────── */
 @media (max-width: 809px) {
-  .footer-nav-pills { flex-direction: column !important; gap: 0 !important; }
+  .footer-nav-pills { flex-direction: column !important; gap: 8px !important; }
   .footer-nav-pills > a {
     text-align: left !important;
     padding: 12px 16px !important;
     border-bottom: 0 !important;
+    background: rgba(10, 4, 2, 0.4) !important;
+    color: #ffffff !important;
   }
 }
 
