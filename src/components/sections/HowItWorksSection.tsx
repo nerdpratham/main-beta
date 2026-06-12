@@ -339,6 +339,7 @@ export default function HowItWorksSection() {
           .how-card-title {
             margin: 0 !important;
           }
+            
 
           .how-card-illo {
             flex: 0 0 220px !important;
@@ -379,13 +380,19 @@ export default function HowItWorksSection() {
                opacity  — overall darkness (0 = invisible, 1 = full)
                background — gradient: top color → bottom color, stop positions
           ────────────────────────────────────────────────────────────────── */
+          /* ── WIDE CARD BG IMAGE — mobile scale ───────────────────────────── */
+          .how-it-works-wide-card img {
+            transform: scale(1.0) !important;
+            transform-origin: center center !important;
+          }
+
           .how-wide-gradient {
-            height: 70% !important;
+            height: 75% !important;
             opacity: 1 !important;
             background: linear-gradient(
               180deg,
               rgba(28, 11, 5, 0) 0%,
-              rgba(28, 11, 5, 0.97) 45%
+              rgba(28, 11, 5, 1) 48%
             ) !important;
           }
         }
