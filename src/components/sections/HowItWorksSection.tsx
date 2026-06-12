@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react'
 import { colors, fonts } from '../../styles/tokens'
 import cardBg from '../../assets/how-it-works/how-bg.webp'
-import cardIllustration from '../../assets/how-it-works/1-main.webp'
+import cardIllustration from '../../assets/how-it-works/1.png'
 import cardIllustration2 from '../../assets/how-it-works/how-2.png'
 import cardIllustration3 from '../../assets/how-it-works/3.png'
 import cardBg4 from '../../assets/how-it-works/4th Bg.webp'
@@ -162,8 +162,9 @@ const s = {
     boxSizing: 'border-box',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
+    gap: 0,
     textAlign: 'left',
     backgroundColor: colors.brand1,
   } satisfies CSSProperties,
@@ -297,6 +298,10 @@ export default function HowItWorksSection() {
             gap: 40px !important;
           }
 
+          .how-card-title {
+  font-size: 1.25rem !important;
+}
+
           .how-it-works-heading {
             font-size: 2.5rem !important;
             letter-spacing: -0.045em !important;
@@ -323,11 +328,25 @@ export default function HowItWorksSection() {
             height: auto !important;
             min-height: 0 !important;
             justify-content: flex-start !important;
-            gap: 0px !important;
+            align-items: flex-start !important;
+            gap: 12px !important;
+            padding: 12px !important;
+          }
+
+          .how-card-title {
+            margin: 0 !important;
           }
 
           .how-card-illo {
-            flex: 0 0 auto !important;
+            flex: 0 0 220px !important;
+            height: 220px !important;
+            width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            overflow: hidden !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
           }
 
           .how-card-frame {
@@ -343,6 +362,7 @@ export default function HowItWorksSection() {
           /* Image scales proportionally inside the fixed-height frame */
           .how-card-frame img {
             transform: none !important;
+            filter: none !important;
             height: 100% !important;
             width: auto !important;
             max-width: 100% !important;
