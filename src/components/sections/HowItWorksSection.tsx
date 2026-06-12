@@ -323,28 +323,30 @@ export default function HowItWorksSection() {
             height: auto !important;
             min-height: 0 !important;
             justify-content: flex-start !important;
-            gap: 20px !important;
+            gap: 0px !important;
           }
 
           .how-card-illo {
             flex: 0 0 auto !important;
-            padding: 0 !important;
           }
 
           .how-card-frame {
-            height: auto !important;
-            max-height: 300px !important;
+            height: 220px !important;
+            max-height: 220px !important;
+            width: 100% !important;
             flex: 0 0 auto !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
           }
 
-          /* Drop the scale transform on mobile so the image never visually
-             spills past its box into the surrounding text. */
+          /* Image scales proportionally inside the fixed-height frame */
           .how-card-frame img {
             transform: none !important;
-            height: auto !important;
+            height: 100% !important;
             width: auto !important;
-            max-height: 280px !important;
             max-width: 100% !important;
+            object-fit: contain !important;
           }
         }
       `}</style>
