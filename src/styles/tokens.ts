@@ -241,8 +241,8 @@ export const typography = {
   featureTitle: {
     family: fonts.hn,
     weight: 400,
-    size: { desktop: '1.416rem', tablet: '1.25rem', mobile: '1.125rem' },
-    lineHeight: { desktop: 1.32, tablet: 1.32, mobile: 1.35 },
+    size: { desktop: '1.25rem', tablet: '1.25rem', mobile: '1.125rem' },
+    lineHeight: { desktop: 1.2, tablet: 1.2, mobile: 1.35 },
     letterSpacing: { desktop: '-0.03em', tablet: '-0.025em', mobile: '-0.02em' },
   },
   body: {
