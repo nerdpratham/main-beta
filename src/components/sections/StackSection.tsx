@@ -14,31 +14,10 @@ import type { CSSProperties } from 'react'
 import { gsap, ScrollTrigger } from '../../animations/gsap.config'
 import { lenisInstance } from '../../animations/scroll'
 import { fonts, colors, textStyles } from '../../styles/tokens'
-import ShaderBg from '../ui/ShaderBg'
-import type { ShaderBgControls } from '../ui/ShaderBg'
 
 const RING_TICKS = 80
 const METER_DURATION = 1.65
 const METER_START_STAGGER = 0.0
-
-const NUMBERS_SHADER_CONTROLS: ShaderBgControls = {
-  speed: 1,
-  intensity: 1,
-  blurMix: 0.3,
-  grainAmount: 0.0,
-  vignetteStrength: 0.8,
-  darkColor: [0.11, 0.04, 0.02],
-  lightColor: [0.8, 0.3, 0.13],
-  pointerRadius: 0.42,
-  pointerStrength: 0.55,
-  pointerFluidity: 0.15,
-  pointerDecay: 0.9,
-  flowmapSize: 128,
-  flowFalloff: 0.5,
-  flowAlpha: 0.2,
-  flowDissipation: 0.09,
-  opacity: 1,
-}
 
 interface StatCircleHandle {
   start: (delay?: number, onDone?: () => void) => void
@@ -543,9 +522,17 @@ export default function StackSection() {
             min-height: 100svh !important;
             overflow: visible !important;
             background:
-              radial-gradient(110% 70% at 50% 0%, rgba(245, 217, 207, 0.62), transparent 46%),
-              radial-gradient(90% 70% at 50% 100%, rgba(28, 11, 5, 0.72), transparent 58%),
-              linear-gradient(135deg, #2e1208 0%, #cc4d22 48%, #1c0b05 100%);
+              linear-gradient(
+                177.74973122637272deg,
+                rgb(255,255,255) 18.311%,
+                rgb(251,234,229) 28.084%,
+                rgb(235,181,163) 45.783%,
+                rgb(212,105,69) 63.01%,
+                rgb(204,77,34) 68.299%,
+                rgb(17,7,3) 103.68%
+              );
+            background-size: 100% 150%;
+            background-position: 50% 56%;
           }
 
           .stack-viewport {
@@ -616,9 +603,17 @@ export default function StackSection() {
         @media (max-width: 1199px) {
           .stack-scene {
             background:
-              radial-gradient(110% 70% at 50% 0%, rgba(245, 217, 207, 0.62), transparent 46%),
-              radial-gradient(90% 70% at 50% 100%, rgba(28, 11, 5, 0.72), transparent 58%),
-              linear-gradient(135deg, #2e1208 0%, #cc4d22 48%, #1c0b05 100%);
+              linear-gradient(
+                178.944767463296deg,
+                rgb(255,255,255) 18.311%,
+                rgb(251,234,229) 28.084%,
+                rgb(235,181,163) 45.783%,
+                rgb(212,105,69) 63.01%,
+                rgb(204,77,34) 68.299%,
+                rgb(17,7,3) 103.68%
+              );
+            background-size: 100% 150%;
+            background-position: 50% 56%;
           }
 
           .stack-precision-overlay {
@@ -673,6 +668,26 @@ export default function StackSection() {
           --stack-lightning-color: #E1A853;
           --stack-highlight-ease: cubic-bezier(.645, .045, .355, 1);
           color: #fff;
+        }
+
+        .stack-about-gradient-bg {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+          pointer-events: none;
+          background:
+            linear-gradient(
+              180deg,
+              rgba(17,7,3,1) 20%,
+              rgba(204,77,34,1) 75%,
+              rgba(212,105,69,1) 100%
+            );
+          background-size: 100% 100%;
+          background-position: 50% 50%;
+        }
+
+        .stack-scene-content {
+          z-index: 1;
         }
 
         .stack-reveal-heading {
@@ -836,10 +851,7 @@ export default function StackSection() {
             className="stack-scene absolute inset-0 z-20 overflow-hidden"
             style={{ borderRadius: 500 }}
           >
-            <ShaderBg
-              controls={NUMBERS_SHADER_CONTROLS}
-              style={{ position: 'absolute', inset: 0 }}
-            />
+            <div className="stack-about-gradient-bg" aria-hidden="true" />
 
             <div className="stack-scene-content absolute inset-0 flex flex-col items-center justify-center"
               style={{ padding: '40px 40px', gap: 80 }}>

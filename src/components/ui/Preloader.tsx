@@ -105,6 +105,26 @@ export default function Preloader() {
           --loader-track: rgba(255,255,255,0.20);
           --loader-accent: ${colors.brand1};
           --loader-white: ${colors.white};
+          --loader-wipe-gradient: linear-gradient(
+            24  0deg,
+            #070201 100%
+            #a34120 10%,
+            #070201 100%
+          );
+          --loader-wipe-gradient-soft: linear-gradient(
+            180deg,
+           
+            #070201 100%
+            #6f2c16 10%,
+            #070201 100%
+          );
+          --loader-wipe-gradient-dark: linear-gradient(
+            180deg,
+            #5a1f10 0%,
+            #351007 34%,
+            #130503 70%,
+            #000000 100%
+          );
           pointer-events: none;
           position: fixed;
           inset: 0;
@@ -255,32 +275,25 @@ export default function Preloader() {
           inset: 0;
           transform: translateY(-100%);
           animation: sixdx-loader-zero-one-zero 1.5s cubic-bezier(0.86, 0, 0.07, 1) paused;
+          background: var(--loader-wipe-gradient);
+          background-size: 100% 145%;
+          background-position: 50% 0%;
         }
 
         .sixdx-preloader__line:nth-child(1) {
-          background: linear-gradient(
-            180deg,
-            #CC4D22 0%,
-            rgba(212,105,69,1) 42%,
-            rgba(204,77,34,1) 50%,
-            rgba(17,7,3,1) 89%
-          );
+          background-image: var(--loader-wipe-gradient-soft);
           animation-delay: 1.3s;
         }
 
         .sixdx-preloader__line:nth-child(2) {
-          background-color: var(--loader-line-dark);
+          background-image: var(--loader-wipe-gradient-dark);
+          background-position: 50% 24%;
           animation-delay: 1.4s;
         }
 
         .sixdx-preloader__line:nth-child(3) {
-          background: linear-gradient(
-            180deg,
-            #CC4D22 0%,
-            rgba(212,105,69,1) 42%,
-            rgba(204,77,34,1) 50%,
-            rgba(17,7,3,1) 89%
-          );
+          background-image: var(--loader-wipe-gradient);
+          background-position: 50% 42%;
           animation-delay: 1.5s;
         }
 

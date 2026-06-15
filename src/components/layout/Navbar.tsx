@@ -47,7 +47,7 @@ const GLASS_ITEM: React.CSSProperties = {
   paddingRight: 'var(--nav-link-padding-x, 1rem)',
   paddingTop: 'var(--nav-link-padding-y, 0.25rem)',
   paddingBottom: 'var(--nav-link-padding-y, 0.25rem)',
-  borderRadius: 0,
+  borderRadius: '0.125rem',
   color: 'var(--nav-text, #ffffff)',
   whiteSpace: 'nowrap',
   transition: 'background-color 0.25s ease, color 0.3s ease',

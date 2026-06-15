@@ -50,7 +50,7 @@ const FEATURES_RIGHT = [
 function FeatureDetail({ title, description }: FeatureDetailProps) {
   return (
     <article className="about-feature">
-      <h3 style={{ ...textStyles.featureTitle, color: colors.white, fontWeight: 500 }}>{title}</h3>
+      <h3 style={{ ...textStyles.featureTitle, color: colors.white, fontWeight: 400 }}>{title}</h3>
       <p style={{ ...textStyles.bodyLarge, color: colors.white70 }}>{description}</p>
     </article>
   )
@@ -183,7 +183,7 @@ export default function AboutSection() {
               and product-design clients.
             </p>
 
-            <PrimaryButton label="Explore SixD" onClick={openSixD} />
+            <PrimaryButton label="Explore SixD" onClick={openSixD} className="about-summary-cta" />
           </div>
         </div>
 
@@ -380,6 +380,10 @@ const ABOUT_CSS = `
   .about-summary-row p {
     width: 100%;
     max-width: 367px;
+  }
+
+  .about-summary-cta {
+    align-self: flex-end !important;
   }
 
   .about-visual-row {
