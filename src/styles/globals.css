@@ -290,19 +290,19 @@ header.sixdx-nav.theme-light {
 /* ── Stack Section ──────────────────────────────────────────────────────── */
 @media (max-width: 809px) {
   .sixdx-stack-h2    { font-size: 20px !important; }
-  .sixdx-stack-stats { padding: 60px 16px !important; }
+  .sixdx-stack-stats { padding: 60px 20px !important; }
 }
 
 /* ── About Section ──────────────────────────────────────────────────────── */
 @media (max-width: 1199px) {
-  .about-section     { padding: 80px 28px !important; }
+  .about-section     { padding: 80px 20px !important; }
   .about-upper-row   { flex-direction: column !important; }
   .about-lower-row   { flex-direction: column !important; }
   .about-quote-col   { height: auto !important; }
   .about-image-frame { height: 340px !important; }
 }
 @media (max-width: 809px) {
-  .about-section     { padding: 60px 16px !important; }
+  .about-section     { padding: 60px 20px !important; }
   .about-image-frame { height: 240px !important; }
 }
 
@@ -311,7 +311,7 @@ header.sixdx-nav.theme-light {
 /* ── How SixDX Works Section ────────────────────────────────────────────── */
 @media (max-width: 809px) {
   .how-sixdx-works {
-    padding: 60px 16px !important;
+    padding: 60px 20px !important;
     min-height: 100svh !important;
   }
   .how-sixdx-header {
@@ -387,7 +387,7 @@ header.sixdx-nav.theme-light {
     max-width: 100% !important;
   }
   .services-intro-section {
-    padding: 28px !important;
+    padding: 28px 20px !important;
   }
   .services-intro-heading {
     font-size: 2rem !important;
@@ -410,7 +410,7 @@ header.sixdx-nav.theme-light {
 @media (max-width: 809px) {
   .services-intro-section {
     min-height: 100svh !important;
-    padding: 16px !important;
+    padding: 16px 20px !important;
     align-items: center !important;
   }
   .services-intro-heading {
@@ -418,7 +418,7 @@ header.sixdx-nav.theme-light {
     letter-spacing: -0.025em !important;
   }
   .wwc-details-bar {
-    padding: 16px !important;
+    padding: 16px 20px !important;
     align-items: flex-start !important;
   }
   .wwc-details-inner {
@@ -458,12 +458,12 @@ header.sixdx-nav.theme-light {
 
 /* ── Contact Section ────────────────────────────────────────────────────── */
 @media (max-width: 1199px) {
-  .contact-section { flex-direction: column !important; gap: 48px !important; padding: 80px 28px !important; }
+  .contact-section { flex-direction: column !important; gap: 48px !important; padding: 80px 20px !important; }
   .contact-form    { width: 100% !important; }
   .contact-left    { max-width: 100% !important; }
 }
 @media (max-width: 809px) {
-  .contact-section { padding: 60px 16px !important; }
+  .contact-section { padding: 60px 20px !important; }
   .contact-offices { flex-direction: column !important; }
 }
 
@@ -473,7 +473,7 @@ header.sixdx-nav.theme-light {
   .footer-offices  { width: 100% !important; }
 }
 @media (max-width: 809px) {
-  .footer-gradient-block   { padding: 60px 16px 40px !important; gap: var(--footer-mobile-gradient-gap, 80px) !important; }
-  .footer-bottom-bar       { padding-left: 16px !important; padding-right: 16px !important; }
+  .footer-gradient-block   { padding: 60px 20px 40px !important; gap: var(--footer-mobile-gradient-gap, 80px) !important; }
+  .footer-bottom-bar       { padding-left: 20px !important; padding-right: 20px !important; }
   .footer-newsletter-card  { width: 100% !important; height: auto !important; aspect-ratio: 329 / 186; }
 }

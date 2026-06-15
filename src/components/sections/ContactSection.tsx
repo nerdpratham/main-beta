@@ -136,7 +136,7 @@ export default function ContactSection() {
       className="contact-section"
       style={{
         position          : 'relative',
-        padding           : '100px 28px',
+        padding           : '100px 20px',
         display           : 'flex',
         justifyContent    : 'space-between',
         alignItems        : 'flex-start',
@@ -193,7 +193,7 @@ export default function ContactSection() {
           .contact-heading { max-width: 280px; }              /* mobile   — edit here */
 
           .contact-section {
-            padding: 72px 16px !important;
+            padding: 72px 20px !important;
           }
 
           .contact-offices {

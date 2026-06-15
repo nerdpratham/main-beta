@@ -89,7 +89,7 @@ const s = {
     width: '100%',
     background: colors.ink,
     color: colors.white,
-    padding: '100px 28px',
+    padding: '100px 20px',
     boxSizing: 'border-box',
     display: 'flex',
     flexDirection: 'column',
@@ -300,7 +300,7 @@ export default function HowItWorksSection() {
 
         @media (max-width: 760px) {
           .how-it-works-section {
-            padding: 72px 16px !important;
+            padding: 72px 20px !important;
             gap: 40px !important;
           }
 

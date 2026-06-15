@@ -109,7 +109,7 @@ export default function PrivacyPolicyPage() {
 
         @media (max-width: 809px) {
           .privacy-policy-page {
-            padding: 92px 16px 72px;
+            padding: 92px 20px 72px;
           }
 
           .privacy-policy-title {

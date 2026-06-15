@@ -36,7 +36,7 @@ const s = {
     background: colors.ink,
     color: colors.white,
     height: '100svh',
-    padding: '68px 22px 40px',
+    padding: '68px 20px 40px',
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
@@ -203,7 +203,7 @@ export default function HowSixDXWorks() {
         .how-num { animation: howNumIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
         @media (max-width: 767px) {
-          .how-sixdx-works      { padding: 56px 14px 16px !important; }
+          .how-sixdx-works      { padding: 56px 20px 16px !important; }
           .how-sixdx-header     { max-width: 100% !important; }
           .how-sixdx-heading    { font-size: 34px !important; line-height: 1.1 !important; }
           .how-sixdx-copy       { font-size: 13px !important; margin-top: 10px !important; line-height: 1.4 !important; }

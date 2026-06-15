@@ -255,7 +255,7 @@ const ABOUT_CSS = `
 
   .about-inner {
     width: 100%;
-    max-width: 1440px;
+    max-width: none;
     box-sizing: border-box;
     padding: 20px;
   }
@@ -577,7 +577,7 @@ const ABOUT_CSS = `
 
     .about-inner {
       max-width: none;
-      padding: 16px;
+      padding: 20px;
     }
 
     .about-intro {
@@ -623,7 +623,7 @@ const ABOUT_CSS = `
 
     .about-differentiation {
       gap: 20px;
-      padding: 24px 16px 40px;
+      padding: 24px 20px 40px;
     }
 
     .about-feature-grid {

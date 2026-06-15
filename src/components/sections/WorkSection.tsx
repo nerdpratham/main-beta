@@ -419,7 +419,7 @@ export default function WorkSection() {
 
         @media (max-width: 809px) {
           .work-section {
-            padding: 40px 16px 40px !important;
+            padding: 40px 20px 40px !important;
             gap: 40px !important;
             min-height: auto !important;
           }

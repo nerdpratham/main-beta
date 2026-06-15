@@ -252,7 +252,7 @@ export default function Navbar() {
           --nav-logo-height: 2.75rem;
           --nav-link-padding-x: 1rem;
           --nav-link-padding-y: 0.25rem;
-          --nav-padding-x: 28px;
+          --nav-padding-x: 20px;
           --nav-padding-y: 8px;
           --nav-overlay-padding: 20px;
           --nav-overlay-header-gap: 60px;
@@ -331,7 +331,7 @@ export default function Navbar() {
           header.sixdx-nav {
             /* Tablet logo matches the desktop size (header + open-menu overlay) */
             --nav-logo-height: 2.75rem;
-            --nav-padding-x: 24px;
+            --nav-padding-x: 20px;
             --nav-padding-y: 12px;
             --nav-overlay-padding: 20px;
             --nav-overlay-header-gap: 60px;
@@ -360,7 +360,7 @@ export default function Navbar() {
           }
           /* Overlay padding matches the tablet header bar so the logo stays put on open */
           .sixdx-menu-overlay {
-            padding: 12px 24px;
+            padding: 12px 20px;
           }
         }
 
@@ -368,7 +368,7 @@ export default function Navbar() {
         @media (max-width: 809px) {
           header.sixdx-nav {
             --nav-logo-height: 32px;
-            --nav-padding-x: 16px;
+            --nav-padding-x: 20px;
             --nav-padding-y: 10px;
             --nav-overlay-padding: 20px;
             --nav-overlay-header-gap: 60px;
@@ -396,7 +396,7 @@ export default function Navbar() {
             width: auto;
           }
           .sixdx-menu-overlay {
-            padding: 10px 16px;
+            padding: 10px 20px;
           }
           .sixdx-menu-cta .clarte-button {
             width: 100% !important;
@@ -423,8 +423,8 @@ export default function Navbar() {
           alignItems: 'center',
           justifyContent: 'space-between',
           width: '100%',
-          paddingLeft: 'var(--nav-padding-x, 28px)',
-          paddingRight: 'var(--nav-padding-x, 28px)',
+          paddingLeft: 'var(--nav-padding-x, 20px)',
+          paddingRight: 'var(--nav-padding-x, 20px)',
           paddingTop: 'var(--nav-padding-y, 4px)',
           paddingBottom: 'var(--nav-padding-y, 4px)',
           borderRadius: 0,

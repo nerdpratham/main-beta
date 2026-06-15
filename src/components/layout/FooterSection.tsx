@@ -562,7 +562,7 @@ export default function FooterSection() {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            paddingTop: 40,
+            paddingTop: 0,
             paddingBottom: 24,
             boxSizing: 'border-box',
           }}
