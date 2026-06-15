@@ -260,7 +260,7 @@ export default function Preloader() {
         .sixdx-preloader__line:nth-child(1) {
           background: linear-gradient(
             180deg,
-            rgb(244, 178, 1) 0%,
+            #CC4D22 0%,
             rgba(212,105,69,1) 42%,
             rgba(204,77,34,1) 50%,
             rgba(17,7,3,1) 89%
@@ -276,7 +276,7 @@ export default function Preloader() {
         .sixdx-preloader__line:nth-child(3) {
           background: linear-gradient(
             180deg,
-            rgb(244, 178, 1) 0%,
+            #CC4D22 0%,
             rgba(212,105,69,1) 42%,
             rgba(204,77,34,1) 50%,
             rgba(17,7,3,1) 89%

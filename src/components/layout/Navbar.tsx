@@ -110,6 +110,11 @@ export default function Navbar() {
       return
     }
 
+    if (href.startsWith('#') && window.location.pathname !== '/') {
+      window.location.href = `/${href}`
+      return
+    }
+
     const target = document.querySelector<HTMLElement>(href)
     if (!target) return
 

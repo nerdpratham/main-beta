@@ -555,6 +555,36 @@ export default function FooterSection() {
           <NewsletterCard />
         </div>
 
+        {/* ── BOTTOM BAR — Privacy Policy + Copyright ──────────────────────── */}
+        <div
+          style={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            paddingTop: 40,
+            paddingBottom: 24,
+            boxSizing: 'border-box',
+          }}
+        >
+          <a
+            href="/privacy-policy"
+            style={{
+              ...textStyles.label,
+              color: colors.white50,
+              textDecoration: 'none',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.color = colors.white)}
+            onMouseLeave={e => (e.currentTarget.style.color = colors.white50)}
+          >
+            Privacy Policy
+          </a>
+
+          <p style={{ ...textStyles.label, color: colors.white50, margin: 0 }}>
+            © 2026 SixD Engineering. All rights reserved.
+          </p>
+        </div>
+
       </div>{/* end GRADIENT BLOCK */}
 
     </footer>
