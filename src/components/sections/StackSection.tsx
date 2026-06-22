@@ -649,6 +649,17 @@ export default function StackSection() {
         }
 
 
+        .stack-scene {
+          background: radial-gradient(
+            ellipse at 100% 90%,
+
+            #CC4D22 1%,
+            #0A0402 30%,
+            #0A0402 79%,
+            #CC4D22 100%
+          );
+        }
+
         .stack-scene-content {
           z-index: 1;
         }
