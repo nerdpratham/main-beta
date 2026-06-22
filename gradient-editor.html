@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gradient Editor — SixDX</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:      #1c1c1c;
+  --panel:   #222;
+  --surf:    #2c2c2c;
+  --surf2:   #363636;
+  --border:  rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.13);
+  --text:    #edebe7;
+  --muted:   rgba(237,235,231,0.42);
+  --accent:  #cc4d22;
+  --acc2:    #e86030;
+  --r:       5px;
+}
+html, body { height: 100%; overflow: hidden; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TOPBAR ─────────────────────────────────────────────────────── */
+.topbar {
+  height: 44px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0; gap: 12px;
+}
+.topbar-brand { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.topbar-brand b { color: var(--accent); }
+.type-sw { display: flex; background: var(--surf); border-radius: var(--r); padding: 2px; gap: 2px; }
+.type-btn {
+  padding: 4px 14px; border: none; background: transparent;
+  color: var(--muted); font-size: 11px; font-weight: 500;
+  border-radius: 3px; cursor: pointer; transition: all .15s; font-family: inherit;
+}
+.type-btn.on { background: var(--surf2); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,.5); }
+.topbar-hint { font-size: 10px; color: var(--muted); }
+
+/* ── FRAME SIZE BAR ─────────────────────────────────────────────── */
+.sizebar {
+  height: 38px;
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  background: var(--panel);
+}
+.sizebar-lbl { font-size: 10px; color: var(--muted); letter-spacing: .05em; margin-right: 2px; }
+.size-inp-wrap { display: flex; align-items: center; gap: 4px; }
+.size-inp-wrap span { font-size: 10px; color: var(--muted); }
+.size-inp {
+  width: 56px; background: var(--surf); border: 1px solid var(--border2);
+  border-radius: 3px; color: var(--text); font-size: 11px; font-family: inherit;
+  padding: 3px 6px; outline: none; text-align: center; -moz-appearance: textfield;
+}
+.size-inp::-webkit-inner-spin-button { -webkit-appearance: none; }
+.size-inp:focus { border-color: var(--accent); }
+.size-x { font-size: 10px; color: var(--muted); padding: 0 2px; }
+.size-divider { width: 1px; height: 16px; background: var(--border2); margin: 0 4px; }
+.preset-size-btns { display: flex; gap: 4px; }
+.psz {
+  padding: 3px 8px; border: 1px solid var(--border2); border-radius: 3px;
+  background: transparent; color: var(--muted); font-size: 10px; font-weight: 500;
+  cursor: pointer; font-family: inherit; transition: all .12s; white-space: nowrap;
+}
+.psz:hover { background: var(--surf); color: var(--text); border-color: rgba(255,255,255,.2); }
+.psz.on { background: var(--surf2); color: var(--text); border-color: var(--accent); }
+.size-scale { font-size: 10px; color: var(--muted); margin-left: auto; }
+.size-scale b { color: var(--text); }
+
+/* ── BODY ───────────────────────────────────────────────────────── */
+.body { display: flex; flex: 1; overflow: hidden; }
+
+/* ── LEFT ───────────────────────────────────────────────────────── */
+.left {
+  width: 228px; flex-shrink: 0;
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  overflow-y: auto; overflow-x: hidden;
+}
+.sec { padding: 12px; border-bottom: 1px solid var(--border); }
+.sec-lbl { font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+
+/* Color picker */
+.cp-field {
+  position: relative; width: 100%; height: 126px;
+  border-radius: var(--r); overflow: hidden;
+  cursor: crosshair; user-select: none; margin-bottom: 8px;
+}
+#cpCanvas { display: block; width: 100%; height: 100%; }
+.cp-cursor {
+  position: absolute; width: 12px; height: 12px;
+  border-radius: 50%; border: 2px solid #fff;
+  box-shadow: 0 0 0 1px rgba(0,0,0,.4);
+  transform: translate(-50%,-50%);
+  pointer-events: none; z-index: 2;
+}
+.track-row { margin-bottom: 6px; position: relative; user-select: none; }
+.track { height: 10px; border-radius: 5px; cursor: pointer; position: relative; }
+.hue-track { background: linear-gradient(to right,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00); }
+.alpha-bg {
+  border-radius: 5px; position: absolute; inset: 0;
+  background-image: linear-gradient(45deg,#555 25%,transparent 25%),linear-gradient(-45deg,#555 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#555 75%),linear-gradient(-45deg,transparent 75%,#555 75%);
+  background-size: 6px 6px; background-position: 0 0,0 3px,3px -3px,-3px 0;
+}
+.alpha-fill { position: absolute; inset: 0; border-radius: 5px; pointer-events: none; }
+.thumb {
+  position: absolute; top: 50%; width: 14px; height: 14px;
+  border-radius: 50%; background: #fff;
+  border: 2px solid rgba(255,255,255,.95);
+  box-shadow: 0 0 0 1px rgba(0,0,0,.35), 0 2px 5px rgba(0,0,0,.5);
+  transform: translate(-50%,-50%); pointer-events: none;
+}
+.hex-row { display: flex; align-items: center; gap: 5px; }
+.hex-hash { color: var(--muted); font-size: 11px; }
+.hex-inp {
+  flex: 1; background: var(--surf); border: 1px solid var(--border2);
+  border-radius: 3px; color: var(--text); font-size: 11px;
+  font-family: 'SF Mono','Fira Code',monospace; padding: 5px 7px; outline: none;
+}
+.hex-inp:focus { border-color: var(--accent); }
+.num-inp {
+  width: 46px; background: var(--surf); border: 1px solid var(--border2);
+  border-radius: 3px; color: var(--text); font-size: 11px; font-family: inherit;
+  padding: 5px 7px; outline: none; text-align: right; -moz-appearance: textfield;
+}
+.num-inp::-webkit-inner-spin-button { -webkit-appearance: none; }
+.num-inp:focus { border-color: var(--accent); }
+.inp-unit { font-size: 10px; color: var(--muted); }
+
+/* Stop list */
+.stop-list { display: flex; flex-direction: column; gap: 2px; }
+.stop-row {
+  display: flex; align-items: center; gap: 6px;
+  padding: 5px 6px; border-radius: 3px; cursor: pointer; transition: background .1s;
+}
+.stop-row:hover { background: var(--surf); }
+.stop-row.on { background: var(--surf2); }
+.stop-swatch { width: 16px; height: 16px; border-radius: 3px; border: 1px solid var(--border2); flex-shrink: 0; }
+.stop-pct { font-size: 10px; color: var(--muted); width: 34px; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.stop-hex-lbl { font-size: 10px; color: var(--text); flex: 1; font-family: 'SF Mono','Fira Code',monospace; }
+.stop-del {
+  width: 14px; height: 14px; border: none; background: none;
+  color: var(--muted); font-size: 14px; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; border-radius: 50%; transition: opacity .12s, background .12s;
+}
+.stop-row:hover .stop-del { opacity: 1; }
+.stop-del:hover { background: rgba(204,77,34,.25); color: var(--acc2); }
+
+/* Presets */
+.presets { display: grid; grid-template-columns: repeat(5,1fr); gap: 5px; }
+.preset {
+  aspect-ratio: 1; border-radius: 4px; cursor: pointer;
+  border: 2px solid transparent; transition: border-color .12s, transform .12s;
+}
+.preset:hover { transform: scale(1.08); border-color: rgba(255,255,255,.25); }
+.preset.on { border-color: var(--accent); }
+.sel {
+  flex: 1; background: var(--surf); border: 1px solid var(--border2);
+  border-radius: 3px; color: var(--text); font-size: 11px; font-family: inherit;
+  padding: 5px 7px; outline: none; cursor: pointer;
+}
+.sel:focus { border-color: var(--accent); }
+.field-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+.field-lbl { font-size: 10px; color: var(--muted); width: 32px; flex-shrink: 0; }
+
+/* ── CENTER CANVAS ──────────────────────────────────────────────── */
+.canvas-wrap {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  background: var(--bg);
+  background-image:
+    linear-gradient(45deg,#242424 25%,transparent 25%),
+    linear-gradient(-45deg,#242424 25%,transparent 25%),
+    linear-gradient(45deg,transparent 75%,#242424 75%),
+    linear-gradient(-45deg,transparent 75%,#242424 75%);
+  background-size: 16px 16px;
+  background-position: 0 0,0 8px,8px -8px,-8px 0;
+  position: relative; overflow: visible;
+}
+.preview-outer { position: relative; }
+.preview-box {
+  border-radius: 8px;
+  border: 1px solid var(--border2);
+  box-shadow: 0 12px 48px rgba(0,0,0,.6);
+  display: block;
+  transition: width .15s, height .15s;
+}
+#overlay {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  overflow: visible; pointer-events: none;
+}
+#overlay .hi { pointer-events: all; }
+
+/* ── RIGHT ──────────────────────────────────────────────────────── */
+.right {
+  width: 252px; flex-shrink: 0;
+  border-left: 1px solid var(--border);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.code-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 12px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+.code-hdr-l { display: flex; align-items: center; gap: 6px; }
+.code-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+.code-title { font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.copy-btn {
+  padding: 4px 10px; border: 1px solid var(--border2); border-radius: 3px;
+  background: var(--surf); color: var(--text); font-size: 10px; font-weight: 500;
+  cursor: pointer; font-family: inherit; transition: all .15s;
+}
+.copy-btn:hover { background: var(--surf2); border-color: rgba(255,255,255,.2); }
+.copy-btn.ok { background: rgba(204,77,34,.15); border-color: var(--accent); color: var(--accent); }
+.code-out {
+  flex: 1; overflow-y: auto; padding: 12px;
+  font-family: 'SF Mono','Fira Code','Consolas',monospace;
+  font-size: 10.5px; line-height: 1.75; white-space: pre-wrap; word-break: break-all;
+}
+.c-kw{color:#c792ea}.c-fn{color:#82aaff}.c-num{color:#f78c6c}.c-str{color:#c3e88d}.c-cm{color:var(--muted)}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand"><b>SixDX</b> Gradient Editor</div>
+  <div class="type-sw">
+    <button class="type-btn on" data-t="linear">Linear</button>
+    <button class="type-btn" data-t="radial">Radial</button>
+    <button class="type-btn" data-t="conic">Conic</button>
+  </div>
+  <div class="topbar-hint">Drag handles on preview · Right-click stop to delete · Click line/edge to add stop</div>
+</div>
+
+<!-- FRAME SIZE BAR -->
+<div class="sizebar">
+  <span class="sizebar-lbl">Frame</span>
+  <div class="size-inp-wrap">
+    <span>W</span>
+    <input class="size-inp" id="frameW" type="number" value="480" min="120" max="8000" />
+  </div>
+  <span class="size-x">×</span>
+  <div class="size-inp-wrap">
+    <span>H</span>
+    <input class="size-inp" id="frameH" type="number" value="270" min="80" max="8000" />
+  </div>
+  <div class="size-divider"></div>
+  <div class="preset-size-btns">
+    <button class="psz" data-w="320"  data-h="568">Mobile</button>
+    <button class="psz" data-w="768"  data-h="1024">Tablet</button>
+    <button class="psz on" data-w="480"  data-h="270">16:9</button>
+    <button class="psz" data-w="800"  data-h="450">Full HD</button>
+    <button class="psz" data-w="1200" data-h="630">OG Image</button>
+    <button class="psz" data-w="480"  data-h="480">Square</button>
+  </div>
+  <div class="size-scale">Scale <b id="scaleLabel">100%</b></div>
+</div>
+
+<div class="body">
+
+  <!-- LEFT -->
+  <div class="left">
+    <div class="sec" id="colorSec">
+      <div class="sec-lbl">Color</div>
+      <div class="cp-field" id="cpField">
+        <canvas id="cpCanvas"></canvas>
+        <div class="cp-cursor" id="cpCursor"></div>
+      </div>
+      <div class="track-row">
+        <div class="track hue-track" id="hueTrack"><div class="thumb" id="hueThumb"></div></div>
+      </div>
+      <div class="track-row" style="margin-bottom:10px">
+        <div class="track" id="alphaTrack">
+          <div class="alpha-bg"></div>
+          <div class="alpha-fill" id="alphaFill"></div>
+          <div class="thumb" id="alphaThumb"></div>
+        </div>
+      </div>
+      <div class="hex-row">
+        <span class="hex-hash">#</span>
+        <input class="hex-inp" id="hexInp" maxlength="6" placeholder="CC4D22"/>
+        <input class="num-inp" id="alphaInp" type="number" min="0" max="100" value="100"/>
+        <span class="inp-unit">%</span>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-lbl">Stops</div>
+      <div class="stop-list" id="stopList"></div>
+    </div>
+
+    <!-- Radial options -->
+    <div class="sec" id="radialSec" style="display:none">
+      <div class="sec-lbl">Radial Options</div>
+      <div class="field-row">
+        <span class="field-lbl">Shape</span>
+        <select class="sel" id="radialShape">
+          <option value="ellipse">Ellipse</option>
+          <option value="circle">Circle</option>
+        </select>
+      </div>
+      <div class="field-row" id="radialSizeRow">
+        <span class="field-lbl">Size</span>
+        <select class="sel" id="radialSize">
+          <option value="custom">Custom (drag)</option>
+          <option value="farthest-corner">Farthest Corner</option>
+          <option value="closest-corner">Closest Corner</option>
+          <option value="farthest-side">Farthest Side</option>
+          <option value="closest-side">Closest Side</option>
+        </select>
+      </div>
+      <div style="font-size:10px;color:var(--muted);line-height:1.5;margin-top:4px">
+        Drag <span style="color:var(--text)">○ center</span> to reposition<br>
+        Drag <span style="color:var(--text)">→ right</span> handle to resize X<br>
+        Drag <span style="color:var(--text)">↓ bottom</span> handle to resize Y
+      </div>
+    </div>
+
+    <!-- Conic options -->
+    <div class="sec" id="conicSec" style="display:none">
+      <div class="sec-lbl">Conic Options</div>
+      <div style="font-size:10px;color:var(--muted);line-height:1.5">
+        Drag <span style="color:var(--text)">○ center</span> to reposition<br>
+        Drag <span style="color:var(--text)">→ angle</span> handle to rotate
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-lbl">Presets</div>
+      <div class="presets" id="presetGrid"></div>
+    </div>
+  </div>
+
+  <!-- CANVAS -->
+  <div class="canvas-wrap">
+    <div class="preview-outer" id="previewOuter">
+      <div class="preview-box" id="previewBox"></div>
+      <svg id="overlay" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right">
+    <div class="code-hdr">
+      <div class="code-hdr-l"><div class="code-dot"></div><div class="code-title">CSS Output</div></div>
+      <button class="copy-btn" id="copyBtn">Copy</button>
+    </div>
+    <div class="code-out" id="codeOut"></div>
+  </div>
+
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════════════
+   STATE
+════════════════════════════════════════════════════════════════ */
+const S = {
+  type: 'linear',
+  // LINEAR / CONIC: two endpoint handles in normalized [0,1] preview coords
+  lineStart: { x: 0.5, y: 0.0 },
+  lineEnd:   { x: 0.5, y: 1.0 },
+  // RADIAL: center + radius handles in normalized [0,1] preview coords
+  radialCenter: { x: 0.5, y: 0.5 },
+  radialRx: 0.4,   // horizontal radius as fraction of preview width
+  radialRy: 0.35,  // vertical radius as fraction of preview height
+  radialShape: 'ellipse',
+  radialSize: 'custom',
+  // CONIC: center + angle
+  conicCenter: { x: 0.5, y: 0.5 },
+  conicAngle: 0,  // degrees
+  // Stops: t = position [0..1], can exceed range
+  stops: [
+    { id:1, t:0,   h:0,  s:0,    v:1,   a:1 },
+    { id:2, t:0.5, h:14, s:.35,  v:.89, a:1 },
+    { id:3, t:1,   h:17, s:.7,   v:.8,  a:1 },
+  ],
+  sel: 1,
+  nid: 4,
+}
+
+/* ════════════════════════════════════════════════════════════════
+   COLOR UTILS
+════════════════════════════════════════════════════════════════ */
+function hsvToRgb(h,s,v){
+  const i=Math.floor(h/60)%6,f=h/60-Math.floor(h/60)
+  const p=v*(1-s),q=v*(1-f*s),t=v*(1-(1-f)*s)
+  return[[v,t,p],[q,v,p],[p,v,t],[p,q,v],[t,p,v],[v,p,q]][i].map(x=>Math.round(x*255))
+}
+function rgbToHsv(r,g,b){
+  r/=255;g/=255;b/=255
+  const max=Math.max(r,g,b),min=Math.min(r,g,b),d=max-min
+  let h=0,s=max===0?0:d/max,v=max
+  if(d!==0){
+    if(max===r)h=((g-b)/d+6)%6
+    else if(max===g)h=(b-r)/d+2
+    else h=(r-g)/d+4
+    h*=60
+  }
+  return[h,s,v]
+}
+function hexToRgb(hex){const n=parseInt(hex,16);return[(n>>16)&255,(n>>8)&255,n&255]}
+function rgbToHex(r,g,b){return[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('')}
+function stopRgb(s){return hsvToRgb(s.h,s.s,s.v)}
+function stopHex(s){const[r,g,b]=stopRgb(s);return rgbToHex(r,g,b)}
+function stopCss(s){
+  const[r,g,b]=stopRgb(s)
+  return s.a<1?`rgba(${r},${g},${b},${Math.round(s.a*100)/100})`:`#${stopHex(s).toUpperCase()}`
+}
+
+/* ════════════════════════════════════════════════════════════════
+   CSS GENERATION
+════════════════════════════════════════════════════════════════ */
+function linearAngle(){
+  const dx=S.lineEnd.x-S.lineStart.x, dy=S.lineEnd.y-S.lineStart.y
+  return((Math.atan2(dx,-dy)*180/Math.PI)+360)%360
+}
+function conicAngleDeg(){ return((S.conicAngle+360)%360) }
+
+function buildCss(inline=false){
+  const sorted=[...S.stops].sort((a,b)=>a.t-b.t)
+  const stopStr=sorted.map(s=>{
+    const pct=Math.round(s.t*1000)/10
+    return inline?`${stopCss(s)} ${pct}%`:`    ${stopCss(s)} ${pct}%`
+  })
+  const sep=inline?', ':',\n'
+
+  if(S.type==='linear'){
+    const a=Math.round(linearAngle()*10)/10
+    return inline
+      ?`linear-gradient(${a}deg, ${stopStr.join(', ')})`
+      :`linear-gradient(\n  ${a}deg,\n${stopStr.join(',\n')}\n)`
+  }
+
+  if(S.type==='radial'){
+    const cx=Math.round(S.radialCenter.x*1000)/10
+    const cy=Math.round(S.radialCenter.y*1000)/10
+    let shapeStr
+    if(S.radialSize==='custom'){
+      const box=document.getElementById('previewBox')
+      const W=box.clientWidth||480, H=box.clientHeight||270
+      const rxPx=Math.round(S.radialRx*W)
+      const ryPx=Math.round(S.radialRy*H)
+      shapeStr=S.radialShape==='circle'?`circle ${rxPx}px`:`${rxPx}px ${ryPx}px`
+    } else {
+      shapeStr=`${S.radialShape} ${S.radialSize}`
+    }
+    return inline
+      ?`radial-gradient(${shapeStr} at ${cx}% ${cy}%, ${stopStr.join(', ')})`
+      :`radial-gradient(\n  ${shapeStr} at ${cx}% ${cy}%,\n${stopStr.join(',\n')}\n)`
+  }
+
+  if(S.type==='conic'){
+    const a=Math.round(conicAngleDeg()*10)/10
+    const cx=Math.round(S.conicCenter.x*1000)/10
+    const cy=Math.round(S.conicCenter.y*1000)/10
+    return inline
+      ?`conic-gradient(from ${a}deg at ${cx}% ${cy}%, ${stopStr.join(', ')})`
+      :`conic-gradient(\n  from ${a}deg at ${cx}% ${cy}%,\n${stopStr.join(',\n')}\n)`
+  }
+  return ''
+}
+
+/* ════════════════════════════════════════════════════════════════
+   COORDINATE HELPERS
+════════════════════════════════════════════════════════════════ */
+const box=()=>document.getElementById('previewBox').getBoundingClientRect()
+const outer=()=>document.getElementById('previewOuter').getBoundingClientRect()
+
+function clientToNorm(cx,cy){
+  const b=box(),o=outer()
+  return{ x:(cx-b.left)/b.width, y:(cy-b.top)/b.height }
+}
+function normToSvg(nx,ny){
+  const b=box(),o=outer()
+  return{ x:(b.left-o.left)+nx*b.width, y:(b.top-o.top)+ny*b.height }
+}
+
+// Linear: position of a stop (t) on the gradient line → SVG coords
+function linearStopPos(t){
+  const sx=S.lineStart.x,sy=S.lineStart.y,ex=S.lineEnd.x,ey=S.lineEnd.y
+  return normToSvg(sx+t*(ex-sx), sy+t*(ey-sy))
+}
+// Radial: position of a stop along the right-axis of the ellipse → SVG coords
+function radialStopPos(t){
+  return normToSvg(S.radialCenter.x+t*S.radialRx, S.radialCenter.y)
+}
+// Linear: project click point onto line → t value
+function pointToLinearT(nx,ny){
+  const dx=S.lineEnd.x-S.lineStart.x, dy=S.lineEnd.y-S.lineStart.y
+  const len2=dx*dx+dy*dy; if(len2===0)return 0
+  return((nx-S.lineStart.x)*dx+(ny-S.lineStart.y)*dy)/len2
+}
+// Radial: project click onto X-axis from center → t value
+function pointToRadialT(nx,ny){
+  if(S.radialRx===0)return 0
+  return(nx-S.radialCenter.x)/S.radialRx
+}
+
+/* ════════════════════════════════════════════════════════════════
+   SVG HELPERS
+════════════════════════════════════════════════════════════════ */
+const NS='http://www.w3.org/2000/svg'
+function mkEl(tag,attrs,cls){
+  const el=document.createElementNS(NS,tag)
+  if(attrs)Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v))
+  if(cls)el.setAttribute('class',cls)
+  return el
+}
+
+/* ════════════════════════════════════════════════════════════════
+   OVERLAY RENDER — LINEAR
+════════════════════════════════════════════════════════════════ */
+function renderLinear(svg){
+  const sp=normToSvg(S.lineStart.x,S.lineStart.y)
+  const ep=normToSvg(S.lineEnd.x,S.lineEnd.y)
+  const dx=ep.x-sp.x,dy=ep.y-sp.y,len=Math.sqrt(dx*dx+dy*dy)||1
+  const ux=dx/len,uy=dy/len,ext=70
+
+  // Extended faint dashed line
+  svg.appendChild(mkEl('line',{x1:sp.x-ux*ext,y1:sp.y-uy*ext,x2:ep.x+ux*ext,y2:ep.y+uy*ext,stroke:'rgba(255,255,255,0.1)','stroke-width':'1','stroke-dasharray':'3 6'}))
+  // Main line
+  svg.appendChild(mkEl('line',{x1:sp.x,y1:sp.y,x2:ep.x,y2:ep.y,stroke:'rgba(255,255,255,0.5)','stroke-width':'1.5'}))
+
+  // Clickable hit line for adding stops
+  const hit=mkEl('line',{x1:sp.x,y1:sp.y,x2:ep.x,y2:ep.y,stroke:'transparent','stroke-width':'18',cursor:'crosshair'},'hi')
+  hit.addEventListener('click',e=>addStopOnLine(e,'linear'))
+  svg.appendChild(hit)
+
+  // Stop handles
+  S.stops.forEach(stop=>renderStopHandle(svg,stop,linearStopPos(stop.t),'linear'))
+
+  // Start handle (○)
+  renderEndHandle(svg,sp,'start','linear')
+  // End handle (⊡)
+  renderEndHandle(svg,ep,'end','linear')
+}
+
+/* ════════════════════════════════════════════════════════════════
+   OVERLAY RENDER — RADIAL
+════════════════════════════════════════════════════════════════ */
+function renderRadial(svg){
+  const b=box()
+  const W=b.width,H=b.height
+  const cx=normToSvg(S.radialCenter.x,S.radialCenter.y)
+  const rxPx=S.radialRx*W, ryPx=S.radialRy*H
+
+  // Ellipse outline
+  svg.appendChild(mkEl('ellipse',{
+    cx:cx.x,cy:cx.y,rx:rxPx,ry:ryPx,
+    fill:'none',stroke:'rgba(255,255,255,0.35)','stroke-width':'1','stroke-dasharray':'4 5'
+  }))
+  // Second outer ring (faint)
+  svg.appendChild(mkEl('ellipse',{
+    cx:cx.x,cy:cx.y,rx:rxPx*1.6,ry:ryPx*1.6,
+    fill:'none',stroke:'rgba(255,255,255,0.08)','stroke-width':'1','stroke-dasharray':'2 8'
+  }))
+
+  // Axis lines (center to rx handle, center to ry handle)
+  const rx_p=normToSvg(S.radialCenter.x+S.radialRx,S.radialCenter.y)
+  const ry_p=normToSvg(S.radialCenter.x,S.radialCenter.y+S.radialRy)
+  svg.appendChild(mkEl('line',{x1:cx.x,y1:cx.y,x2:rx_p.x,y2:rx_p.y,stroke:'rgba(255,255,255,0.25)','stroke-width':'1'}))
+  svg.appendChild(mkEl('line',{x1:cx.x,y1:cx.y,x2:ry_p.x,y2:ry_p.y,stroke:'rgba(255,255,255,0.25)','stroke-width':'1'}))
+
+  // Click on ellipse edge to add stop
+  const hitEllipse=mkEl('ellipse',{
+    cx:cx.x,cy:cx.y,rx:rxPx,ry:ryPx,
+    fill:'none',stroke:'transparent','stroke-width':'14',cursor:'crosshair'
+  },'hi')
+  hitEllipse.addEventListener('click',e=>addStopOnLine(e,'radial'))
+  svg.appendChild(hitEllipse)
+
+  // Stop handles — shown along the X axis (right side)
+  S.stops.forEach(stop=>renderStopHandle(svg,stop,radialStopPos(stop.t),'radial'))
+
+  // Center handle
+  renderCenterHandle(svg,cx,'radialCenter')
+
+  // Rx handle (right)
+  renderResizeHandle(svg,rx_p,'rx','→')
+
+  // Ry handle (bottom)
+  renderResizeHandle(svg,ry_p,'ry','↓')
+}
+
+/* ════════════════════════════════════════════════════════════════
+   OVERLAY RENDER — CONIC
+════════════════════════════════════════════════════════════════ */
+function renderConic(svg){
+  const cc=normToSvg(S.conicCenter.x,S.conicCenter.y)
+  const armLen=80
+  const rad=(S.conicAngle-90)*Math.PI/180
+  const ap={x:cc.x+Math.cos(rad)*armLen,y:cc.y+Math.sin(rad)*armLen}
+
+  // Sweep indicator arcs
+  for(let i=0;i<4;i++){
+    const startA=S.conicAngle+i*90
+    const arc=describeArc(cc.x,cc.y,armLen*0.6,startA,startA+85)
+    svg.appendChild(mkEl('path',{d:arc,fill:'none',stroke:`rgba(255,255,255,${0.1+i*0.04})`,'stroke-width':'1'}))
+  }
+
+  // Angle arm line
+  svg.appendChild(mkEl('line',{x1:cc.x,y1:cc.y,x2:ap.x,y2:ap.y,stroke:'rgba(255,255,255,0.5)','stroke-width':'1.5'}))
+
+  // Click arm to add stop
+  const hit=mkEl('line',{x1:cc.x,y1:cc.y,x2:ap.x,y2:ap.y,stroke:'transparent','stroke-width':'18',cursor:'crosshair'},'hi')
+  hit.addEventListener('click',e=>addStopOnLine(e,'conic'))
+  svg.appendChild(hit)
+
+  // Stop handles along the arm
+  S.stops.forEach(stop=>{
+    const t=stop.t
+    const px=cc.x+Math.cos(rad)*armLen*t
+    const py=cc.y+Math.sin(rad)*armLen*t
+    renderStopHandle(svg,stop,{x:px,y:py},'conic')
+  })
+
+  // Center handle
+  renderCenterHandle(svg,cc,'conicCenter')
+
+  // Angle handle
+  const angleG=document.createElementNS(NS,'g')
+  angleG.setAttribute('class','hi')
+  angleG.style.cursor='grab'
+  angleG.appendChild(mkEl('circle',{cx:ap.x,cy:ap.y,r:'8',fill:'rgba(28,28,28,0.85)',stroke:'rgba(255,255,255,0.9)','stroke-width':'2'}))
+  // Arrow inside
+  angleG.appendChild(mkEl('text',{x:ap.x,y:ap.y+4,fill:'white','font-size':'9','text-anchor':'middle','font-family':'system-ui'}))
+  angleG.appendChild(mkEl('line',{x1:ap.x-3.5,y1:ap.y,x2:ap.x+3.5,y2:ap.y,stroke:'white','stroke-width':'1.8','stroke-linecap':'round'}))
+  angleG.addEventListener('mousedown',e=>{e.stopPropagation();dragConicAngle(e)})
+  svg.appendChild(angleG)
+}
+
+function describeArc(cx,cy,r,startDeg,endDeg){
+  const toRad=d=>(d-90)*Math.PI/180
+  const x1=cx+r*Math.cos(toRad(startDeg)),y1=cy+r*Math.sin(toRad(startDeg))
+  const x2=cx+r*Math.cos(toRad(endDeg)),y2=cy+r*Math.sin(toRad(endDeg))
+  return`M${x1},${y1}A${r},${r},0,0,1,${x2},${y2}`
+}
+
+/* ════════════════════════════════════════════════════════════════
+   SHARED HANDLE RENDERERS
+════════════════════════════════════════════════════════════════ */
+function renderStopHandle(svg,stop,pos,mode){
+  const isSelected=stop.id===S.sel
+  const hex=stopHex(stop)
+  if(isSelected){
+    svg.appendChild(mkEl('circle',{cx:pos.x,cy:pos.y,r:'11',fill:'none',stroke:'rgba(255,255,255,0.85)','stroke-width':'2'}))
+  }
+  const g=document.createElementNS(NS,'g')
+  g.setAttribute('class','hi'); g.style.cursor='grab'
+  g.appendChild(mkEl('circle',{cx:pos.x,cy:pos.y,r:'7',fill:`#${hex}`,stroke:'rgba(255,255,255,0.85)','stroke-width':'2'}))
+  g.addEventListener('mousedown',e=>{e.stopPropagation();S.sel=stop.id;dragStop(e,stop,mode);render()})
+  g.addEventListener('contextmenu',e=>{
+    e.preventDefault()
+    if(S.stops.length>2){S.stops=S.stops.filter(s=>s.id!==stop.id);if(S.sel===stop.id)S.sel=S.stops[0].id;render()}
+  })
+  svg.appendChild(g)
+}
+
+function renderEndHandle(svg,pos,which,mode){
+  const g=document.createElementNS(NS,'g')
+  g.setAttribute('class','hi'); g.style.cursor='grab'
+  g.appendChild(mkEl('circle',{cx:pos.x,cy:pos.y,r:'8',fill:'rgba(24,24,24,0.85)',stroke:'rgba(255,255,255,0.9)','stroke-width':'2'}))
+  if(which==='start'){
+    g.appendChild(mkEl('circle',{cx:pos.x,cy:pos.y,r:'2.5',fill:'white'}))
+  } else {
+    g.appendChild(mkEl('line',{x1:pos.x-4,y1:pos.y,x2:pos.x+4,y2:pos.y,stroke:'white','stroke-width':'2','stroke-linecap':'round'}))
+  }
+  g.addEventListener('mousedown',e=>{e.stopPropagation();dragLineHandle(e,which)})
+  svg.appendChild(g)
+}
+
+function renderCenterHandle(svg,pos,stateKey){
+  const g=document.createElementNS(NS,'g')
+  g.setAttribute('class','hi'); g.style.cursor='move'
+  g.appendChild(mkEl('circle',{cx:pos.x,cy:pos.y,r:'8',fill:'rgba(24,24,24,0.85)',stroke:'rgba(255,255,255,0.9)','stroke-width':'2'}))
+  g.appendChild(mkEl('circle',{cx:pos.x,cy:pos.y,r:'2.5',fill:'white'}))
+  // crosshair ticks
+  ;[[-5,0,5,0],[0,-5,0,5]].forEach(([x1,y1,x2,y2])=>{
+    g.appendChild(mkEl('line',{x1:pos.x+x1,y1:pos.y+y1,x2:pos.x+x2,y2:pos.y+y2,stroke:'rgba(255,255,255,0.4)','stroke-width':'1'}))
+  })
+  g.addEventListener('mousedown',e=>{e.stopPropagation();dragCenterPoint(e,stateKey)})
+  svg.appendChild(g)
+}
+
+function renderResizeHandle(svg,pos,axis,arrow){
+  const g=document.createElementNS(NS,'g')
+  g.setAttribute('class','hi'); g.style.cursor=axis==='rx'?'ew-resize':'ns-resize'
+  g.appendChild(mkEl('rect',{x:pos.x-6,y:pos.y-6,width:'12',height:'12',rx:'2',fill:'rgba(24,24,24,0.85)',stroke:'rgba(255,255,255,0.9)','stroke-width':'2'}))
+  const txt=document.createElementNS(NS,'text')
+  txt.setAttribute('x',pos.x); txt.setAttribute('y',pos.y+3.5)
+  txt.setAttribute('fill','white'); txt.setAttribute('font-size','7')
+  txt.setAttribute('text-anchor','middle'); txt.setAttribute('font-family','system-ui')
+  txt.textContent=arrow; g.appendChild(txt)
+  g.addEventListener('mousedown',e=>{e.stopPropagation();dragRadiusHandle(e,axis)})
+  svg.appendChild(g)
+}
+
+/* ════════════════════════════════════════════════════════════════
+   DRAG HANDLERS
+════════════════════════════════════════════════════════════════ */
+function dragLineHandle(e,which){
+  const b=box()
+  const onMove=ev=>{
+    const nx=(ev.clientX-b.left)/b.width
+    const ny=(ev.clientY-b.top)/b.height
+    if(which==='start'){S.lineStart.x=nx;S.lineStart.y=ny}
+    else{S.lineEnd.x=nx;S.lineEnd.y=ny}
+    render()
+  }
+  const up=()=>{document.removeEventListener('mousemove',onMove);document.removeEventListener('mouseup',up)}
+  document.addEventListener('mousemove',onMove);document.addEventListener('mouseup',up)
+}
+
+function dragStop(e,stop,mode){
+  const b=box()
+  const onMove=ev=>{
+    const nx=(ev.clientX-b.left)/b.width
+    const ny=(ev.clientY-b.top)/b.height
+    if(mode==='linear')stop.t=pointToLinearT(nx,ny)
+    else if(mode==='radial')stop.t=pointToRadialT(nx,ny)
+    else if(mode==='conic'){
+      const cc=S.conicCenter
+      const rad=(S.conicAngle-90)*Math.PI/180
+      const dx=nx-cc.x,dy=ny-cc.y
+      const armLen=80/b.width
+      stop.t=(dx*Math.cos(rad)+dy*Math.sin(rad))/armLen
+    }
+    render()
+  }
+  const up=()=>{document.removeEventListener('mousemove',onMove);document.removeEventListener('mouseup',up)}
+  document.addEventListener('mousemove',onMove);document.addEventListener('mouseup',up)
+}
+
+function dragCenterPoint(e,key){
+  const b=box()
+  const onMove=ev=>{
+    const nx=(ev.clientX-b.left)/b.width
+    const ny=(ev.clientY-b.top)/b.height
+    if(key==='radialCenter'){S.radialCenter.x=nx;S.radialCenter.y=ny}
+    else if(key==='conicCenter'){S.conicCenter.x=nx;S.conicCenter.y=ny}
+    render()
+  }
+  const up=()=>{document.removeEventListener('mousemove',onMove);document.removeEventListener('mouseup',up)}
+  document.addEventListener('mousemove',onMove);document.addEventListener('mouseup',up)
+}
+
+function dragRadiusHandle(e,axis){
+  const b=box()
+  const onMove=ev=>{
+    const nx=(ev.clientX-b.left)/b.width
+    const ny=(ev.clientY-b.top)/b.height
+    if(axis==='rx'){
+      S.radialRx=Math.max(0.02,Math.abs(nx-S.radialCenter.x))
+      if(S.radialShape==='circle')S.radialRy=S.radialRx
+    } else {
+      S.radialRy=Math.max(0.02,Math.abs(ny-S.radialCenter.y))
+      if(S.radialShape==='circle')S.radialRx=S.radialRy
+    }
+    render()
+  }
+  const up=()=>{document.removeEventListener('mousemove',onMove);document.removeEventListener('mouseup',up)}
+  document.addEventListener('mousemove',onMove);document.addEventListener('mouseup',up)
+}
+
+function dragConicAngle(e){
+  const b=box()
+  const cc=S.conicCenter
+  const onMove=ev=>{
+    const nx=(ev.clientX-b.left)/b.width-cc.x
+    const ny=(ev.clientY-b.top)/b.height-cc.y
+    S.conicAngle=Math.round(Math.atan2(ny,nx)*180/Math.PI+90+360)%360
+    render()
+  }
+  const up=()=>{document.removeEventListener('mousemove',onMove);document.removeEventListener('mouseup',up)}
+  document.addEventListener('mousemove',onMove);document.addEventListener('mouseup',up)
+}
+
+/* ════════════════════════════════════════════════════════════════
+   ADD STOP ON CLICK
+════════════════════════════════════════════════════════════════ */
+function interpolateColor(t){
+  const sorted=[...S.stops].sort((a,b)=>a.t-b.t)
+  let left=sorted[0],right=sorted[sorted.length-1]
+  for(let i=0;i<sorted.length-1;i++){
+    if(sorted[i].t<=t&&sorted[i+1].t>=t){left=sorted[i];right=sorted[i+1];break}
+  }
+  const span=right.t-left.t,frac=span===0?0:(t-left.t)/span
+  const[lr,lg,lb]=stopRgb(left),[rr,rg,rb]=stopRgb(right)
+  const[h,s,v]=rgbToHsv(Math.round(lr+(rr-lr)*frac),Math.round(lg+(rg-lg)*frac),Math.round(lb+(rb-lb)*frac))
+  return{h,s,v,a:left.a+(right.a-left.a)*frac}
+}
+
+function addStopOnLine(e,mode){
+  e.stopPropagation()
+  const b=box()
+  const nx=(e.clientX-b.left)/b.width,ny=(e.clientY-b.top)/b.height
+  let t=0
+  if(mode==='linear')t=pointToLinearT(nx,ny)
+  else if(mode==='radial')t=pointToRadialT(nx,ny)
+  else t=0.5
+  const c=interpolateColor(t)
+  const ns={id:S.nid++,t,...c}
+  S.stops.push(ns);S.sel=ns.id;render()
+}
+
+/* ════════════════════════════════════════════════════════════════
+   MAIN OVERLAY RENDER
+════════════════════════════════════════════════════════════════ */
+function renderOverlay(){
+  const svg=document.getElementById('overlay')
+  svg.innerHTML=''
+  if(S.type==='linear')renderLinear(svg)
+  else if(S.type==='radial')renderRadial(svg)
+  else if(S.type==='conic')renderConic(svg)
+}
+
+/* ════════════════════════════════════════════════════════════════
+   COLOR PICKER
+════════════════════════════════════════════════════════════════ */
+function getSel(){return S.stops.find(s=>s.id===S.sel)}
+
+function renderColorPicker(){
+  const stop=getSel();if(!stop)return
+  const canvas=document.getElementById('cpCanvas')
+  const wrap=document.getElementById('cpField')
+  const W=wrap.clientWidth||208,H=wrap.clientHeight||126
+  canvas.width=W;canvas.height=H
+  const ctx=canvas.getContext('2d')
+  const[hr,hg,hb]=hsvToRgb(stop.h,1,1)
+  ctx.fillStyle=`rgb(${hr},${hg},${hb})`;ctx.fillRect(0,0,W,H)
+  const wg=ctx.createLinearGradient(0,0,W,0)
+  wg.addColorStop(0,'rgba(255,255,255,1)');wg.addColorStop(1,'rgba(255,255,255,0)')
+  ctx.fillStyle=wg;ctx.fillRect(0,0,W,H)
+  const bg=ctx.createLinearGradient(0,0,0,H)
+  bg.addColorStop(0,'rgba(0,0,0,0)');bg.addColorStop(1,'rgba(0,0,0,1)')
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H)
+  const cur=document.getElementById('cpCursor')
+  cur.style.left=(stop.s*100)+'%';cur.style.top=((1-stop.v)*100)+'%';cur.style.background=`#${stopHex(stop)}`
+  document.getElementById('hueThumb').style.left=(stop.h/360*100)+'%'
+  const[r,g,b]=stopRgb(stop)
+  document.getElementById('alphaFill').style.background=`linear-gradient(to right,rgba(${r},${g},${b},0),rgb(${r},${g},${b}))`
+  document.getElementById('alphaThumb').style.left=(stop.a*100)+'%'
+  document.getElementById('hexInp').value=stopHex(stop).toUpperCase()
+  document.getElementById('alphaInp').value=Math.round(stop.a*100)
+}
+
+function trackDrag(id,fn){
+  document.getElementById(id).addEventListener('mousedown',e=>{
+    const pick=ev=>{const r=document.getElementById(id).getBoundingClientRect();fn(Math.max(0,Math.min(1,(ev.clientX-r.left)/r.width)))}
+    pick(e)
+    const up=()=>{document.removeEventListener('mousemove',pick);document.removeEventListener('mouseup',up)}
+    document.addEventListener('mousemove',pick);document.addEventListener('mouseup',up)
+  })
+}
+
+document.getElementById('cpField').addEventListener('mousedown',e=>{
+  const pick=ev=>{
+    const r=document.getElementById('cpField').getBoundingClientRect()
+    const stop=getSel();if(!stop)return
+    stop.s=Math.max(0,Math.min(1,(ev.clientX-r.left)/r.width))
+    stop.v=Math.max(0,Math.min(1,1-(ev.clientY-r.top)/r.height))
+    render()
+  }
+  pick(e)
+  const up=()=>{document.removeEventListener('mousemove',pick);document.removeEventListener('mouseup',up)}
+  document.addEventListener('mousemove',pick);document.addEventListener('mouseup',up)
+})
+trackDrag('hueTrack',v=>{const s=getSel();if(!s)return;s.h=v*360;render()})
+trackDrag('alphaTrack',v=>{const s=getSel();if(!s)return;s.a=v;render()})
+document.getElementById('hexInp').addEventListener('input',e=>{
+  const h=e.target.value.replace(/[^0-9a-fA-F]/g,'')
+  if(h.length===6){const[r,g,b]=hexToRgb(h),s=getSel();if(!s)return;const[hh,sv,vv]=rgbToHsv(r,g,b);s.h=hh;s.s=sv;s.v=vv;render()}
+})
+document.getElementById('alphaInp').addEventListener('input',e=>{
+  const s=getSel();if(!s)return;s.a=Math.max(0,Math.min(1,(parseInt(e.target.value)||0)/100));render()
+})
+
+/* ════════════════════════════════════════════════════════════════
+   STOP LIST
+════════════════════════════════════════════════════════════════ */
+function renderStopList(){
+  const list=document.getElementById('stopList')
+  list.innerHTML=''
+  const sorted=[...S.stops].sort((a,b)=>a.t-b.t)
+  sorted.forEach(stop=>{
+    const row=document.createElement('div')
+    row.className='stop-row'+(stop.id===S.sel?' on':'')
+    row.innerHTML=`<div class="stop-swatch" style="background:#${stopHex(stop)};opacity:${stop.a}"></div><span class="stop-pct">${Math.round(stop.t*100)}%</span><span class="stop-hex-lbl">#${stopHex(stop).toUpperCase()}</span><button class="stop-del">×</button>`
+    row.addEventListener('click',ev=>{
+      if(ev.target.classList.contains('stop-del')){if(S.stops.length>2){S.stops=S.stops.filter(s=>s.id!==stop.id);if(S.sel===stop.id)S.sel=S.stops[0].id}}
+      else S.sel=stop.id
+      render()
+    })
+    list.appendChild(row)
+  })
+}
+
+/* ════════════════════════════════════════════════════════════════
+   CODE OUTPUT
+════════════════════════════════════════════════════════════════ */
+function renderCode(){
+  const raw=buildCss(false)
+  const hl=raw
+    .replace(/(linear-gradient|radial-gradient|conic-gradient)/g,'<span class="c-fn">$1</span>')
+    .replace(/(#[0-9a-fA-F]{6,8})/g,'<span class="c-str">$1</span>')
+    .replace(/(rgba?\([^)]+\))/g,'<span class="c-str">$1</span>')
+    .replace(/(\d+\.?\d*)(deg)/g,'<span class="c-num">$1</span><span class="c-kw">$2</span>')
+    .replace(/(-?\d+\.?\d*)(%)/g,'<span class="c-num">$1</span><span class="c-kw">$2</span>')
+    .replace(/(\d+)(px)/g,'<span class="c-num">$1</span><span class="c-kw">$2</span>')
+  document.getElementById('codeOut').innerHTML=`<span class="c-cm">/* Paste into your CSS */\n\n</span><span class="c-kw">background</span>: ${hl};`
+}
+
+/* ════════════════════════════════════════════════════════════════
+   PRESETS
+════════════════════════════════════════════════════════════════ */
+const PRESETS=[
+  { label:'SixDX About',type:'linear',ls:{x:.5,y:0},le:{x:.5,y:1},stops:[{t:0,h:0,s:0,v:1,a:1},{t:.215,h:0,s:0,v:1,a:1},{t:.757,h:14,s:.37,v:.89,a:1},{t:.96,h:18,s:.67,v:.84,a:1},{t:1,h:17,s:.7,v:.8,a:1}] },
+  { label:'SixDX Fire',type:'linear',ls:{x:.5,y:0},le:{x:.5,y:1},stops:[{t:0,h:20,s:.7,v:.85,a:1},{t:.6,h:10,s:.8,v:.5,a:1},{t:1,h:0,s:0,v:.07,a:1}] },
+  { label:'Radial Ember',type:'radial',rc:{x:.5,y:.5},rrx:.45,rry:.35,stops:[{t:0,h:30,s:.1,v:1,a:1},{t:.6,h:20,s:.7,v:.8,a:1},{t:1,h:0,s:0,v:.07,a:1}] },
+  { label:'Radial Glow',type:'radial',rc:{x:.4,y:.4},rrx:.5,rry:.4,stops:[{t:0,h:25,s:.9,v:1,a:1},{t:.5,h:15,s:.8,v:.5,a:1},{t:1,h:0,s:0,v:.07,a:1}] },
+  { label:'Copper',type:'linear',ls:{x:.5,y:0},le:{x:.5,y:1},stops:[{t:0,h:25,s:.9,v:1,a:1},{t:.5,h:15,s:.8,v:.6,a:1},{t:1,h:0,s:0,v:.07,a:1}] },
+  { label:'Ocean',type:'linear',ls:{x:0,y:.5},le:{x:1,y:.5},stops:[{t:0,h:200,s:.8,v:.9,a:1},{t:1,h:240,s:.9,v:.2,a:1}] },
+  { label:'Aurora',type:'linear',ls:{x:.5,y:0},le:{x:.5,y:1},stops:[{t:0,h:160,s:.7,v:.5,a:1},{t:.5,h:270,s:.5,v:.4,a:1},{t:1,h:320,s:.6,v:.3,a:1}] },
+  { label:'Gold',type:'linear',ls:{x:.5,y:0},le:{x:.5,y:1},stops:[{t:0,h:45,s:.9,v:1,a:1},{t:1,h:30,s:.8,v:.4,a:1}] },
+  { label:'Conic Sweep',type:'conic',cc:{x:.5,y:.5},ca:0,stops:[{t:0,h:17,s:.7,v:.8,a:1},{t:.33,h:30,s:.5,v:.9,a:1},{t:.66,h:0,s:0,v:.15,a:1},{t:1,h:17,s:.7,v:.8,a:1}] },
+  { label:'Conic Fire',type:'conic',cc:{x:.5,y:.5},ca:45,stops:[{t:0,h:0,s:0,v:.05,a:1},{t:.5,h:20,s:.9,v:.9,a:1},{t:1,h:0,s:0,v:.05,a:1}] },
+]
+function swatchGrad(p){
+  const st=[...p.stops].sort((a,b)=>a.t-b.t)
+  return st.map(s=>{const[r,g,b]=hsvToRgb(s.h,s.s,s.v);return`rgb(${r},${g},${b}) ${s.t*100}%`}).join(',')
+}
+const pgrid=document.getElementById('presetGrid')
+PRESETS.forEach(p=>{
+  const el=document.createElement('div')
+  el.className='preset'
+  el.style.background=`linear-gradient(135deg,${swatchGrad(p)})`
+  el.title=p.label
+  el.addEventListener('click',()=>{
+    document.querySelectorAll('.preset').forEach(e=>e.classList.remove('on'))
+    el.classList.add('on')
+    S.type=p.type
+    if(p.ls)S.lineStart={...p.ls}
+    if(p.le)S.lineEnd={...p.le}
+    if(p.rc)S.radialCenter={...p.rc}
+    if(p.rrx!=null)S.radialRx=p.rrx
+    if(p.rry!=null)S.radialRy=p.rry
+    if(p.cc)S.conicCenter={...p.cc}
+    if(p.ca!=null)S.conicAngle=p.ca
+    S.stops=p.stops.map(s=>({...s,id:S.nid++,a:s.a??1}))
+    S.sel=S.stops[0].id
+    document.querySelectorAll('.type-btn').forEach(b=>b.classList.toggle('on',b.dataset.t===S.type))
+    syncPanelVisibility()
+    render()
+  })
+  pgrid.appendChild(el)
+})
+
+/* ════════════════════════════════════════════════════════════════
+   TYPE SWITCHER
+════════════════════════════════════════════════════════════════ */
+function syncPanelVisibility(){
+  document.getElementById('radialSec').style.display=S.type==='radial'?'':'none'
+  document.getElementById('conicSec').style.display=S.type==='conic'?'':'none'
+}
+document.querySelectorAll('.type-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    S.type=btn.dataset.t
+    document.querySelectorAll('.type-btn').forEach(b=>b.classList.toggle('on',b===btn))
+    syncPanelVisibility()
+    render()
+  })
+})
+document.getElementById('radialShape').addEventListener('change',e=>{
+  S.radialShape=e.target.value
+  if(S.radialShape==='circle')S.radialRy=S.radialRx
+  render()
+})
+document.getElementById('radialSize').addEventListener('change',e=>{S.radialSize=e.target.value;render()})
+
+/* ════════════════════════════════════════════════════════════════
+   COPY
+════════════════════════════════════════════════════════════════ */
+document.getElementById('copyBtn').addEventListener('click',()=>{
+  navigator.clipboard.writeText(`background: ${buildCss(false)};`).then(()=>{
+    const b=document.getElementById('copyBtn')
+    b.textContent='✓ Copied';b.classList.add('ok')
+    setTimeout(()=>{b.textContent='Copy';b.classList.remove('ok')},1800)
+  })
+})
+
+/* ════════════════════════════════════════════════════════════════
+   KEYBOARD
+════════════════════════════════════════════════════════════════ */
+document.addEventListener('keydown',e=>{
+  if((e.key==='Delete'||e.key==='Backspace')&&document.activeElement===document.body){
+    if(S.stops.length>2){S.stops=S.stops.filter(s=>s.id!==S.sel);S.sel=S.stops[0].id;render()}
+  }
+})
+
+/* ════════════════════════════════════════════════════════════════
+   RENDER
+════════════════════════════════════════════════════════════════ */
+function render(){
+  document.getElementById('previewBox').style.background=buildCss(true)
+  renderOverlay()
+  renderColorPicker()
+  renderStopList()
+  renderCode()
+}
+
+/* ════════════════════════════════════════════════════════════════
+   FRAME SIZE CONTROLS
+════════════════════════════════════════════════════════════════ */
+const MAX_PREVIEW_W = () => document.querySelector('.canvas-wrap').clientWidth  - 80
+const MAX_PREVIEW_H = () => document.querySelector('.canvas-wrap').clientHeight - 80
+
+function applyFrameSize(realW, realH) {
+  const pb = document.getElementById('previewBox')
+  const po = document.getElementById('previewOuter')
+  const wrap = document.querySelector('.canvas-wrap')
+  const maxW = MAX_PREVIEW_W(), maxH = MAX_PREVIEW_H()
+  const scale = Math.min(1, maxW / realW, maxH / realH)
+
+  // Set the actual element size (scaled for screen fit)
+  const dispW = Math.round(realW * scale)
+  const dispH = Math.round(realH * scale)
+  pb.style.width  = dispW + 'px'
+  pb.style.height = dispH + 'px'
+  po.style.width  = dispW + 'px'
+  po.style.height = dispH + 'px'
+
+  document.getElementById('scaleLabel').textContent = Math.round(scale * 100) + '%'
+  document.getElementById('frameW').value = realW
+  document.getElementById('frameH').value = realH
+
+  // Mark active preset
+  document.querySelectorAll('.psz').forEach(b => {
+    b.classList.toggle('on', +b.dataset.w === realW && +b.dataset.h === realH)
+  })
+
+  render()
+}
+
+// W / H inputs
+document.getElementById('frameW').addEventListener('change', e => {
+  applyFrameSize(Math.max(120, Math.min(8000, +e.target.value)), +document.getElementById('frameH').value)
+})
+document.getElementById('frameH').addEventListener('change', e => {
+  applyFrameSize(+document.getElementById('frameW').value, Math.max(80, Math.min(8000, +e.target.value)))
+})
+
+// Preset buttons
+document.querySelectorAll('.psz').forEach(btn => {
+  btn.addEventListener('click', () => applyFrameSize(+btn.dataset.w, +btn.dataset.h))
+})
+
+// Drag-to-resize handle — bottom-right corner of preview
+;(()=>{
+  const handle = document.createElement('div')
+  handle.style.cssText = `
+    position:absolute; bottom:-5px; right:-5px;
+    width:14px; height:14px; cursor:se-resize; z-index:10;
+    background:var(--surf2); border:1.5px solid rgba(255,255,255,0.4);
+    border-radius:3px;
+  `
+  document.getElementById('previewOuter').appendChild(handle)
+
+  handle.addEventListener('mousedown', e => {
+    e.stopPropagation()
+    const startX = e.clientX, startY = e.clientY
+    const startW = +document.getElementById('frameW').value
+    const startH = +document.getElementById('frameH').value
+    const pb = document.getElementById('previewBox')
+    const scaleNow = pb.clientWidth / startW // current display scale
+
+    const onMove = ev => {
+      const dxReal = (ev.clientX - startX) / scaleNow
+      const dyReal = (ev.clientY - startY) / scaleNow
+      const newW = Math.max(120, Math.min(8000, Math.round(startW + dxReal)))
+      const newH = Math.max(80,  Math.min(8000, Math.round(startH + dyReal)))
+      applyFrameSize(newW, newH)
+    }
+    const onUp = () => { document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp) }
+    document.addEventListener('mousemove', onMove)
+    document.addEventListener('mouseup', onUp)
+  })
+})()
+
+window.addEventListener('resize', () => {
+  applyFrameSize(+document.getElementById('frameW').value, +document.getElementById('frameH').value)
+})
+applyFrameSize(480, 270)
+</script>
+</body>
+</html>

@@ -29,9 +29,8 @@ const SERVICES: ServiceItem[] = [
     body:
       'Transform standard operating procedures into a cinematic sequence. Use your procedure document as the source to create a film that the workforce can easily follow, minimizing gaps between written protocols and actual execution.',
     media: {
-      type: 'image',
-      src: 'https://images.unsplash.com/photo-1779642472369-19ea57235a90?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      alt: 'SOP-based modules',
+      type: 'video',
+      src: '/video/ayush-shots.mp4',
     },
   },
   {
@@ -39,9 +38,8 @@ const SERVICES: ServiceItem[] = [
     body:
       'LFF-based 3D animations transform equipment failure reports into engaging visual tools. They highlight how failures occurred, identify gaps, and present root causes with preventive measures. These animations aid organizations in embedding learning, preventing repeat incidents, and improving operational reliability and safety culture.',
     media: {
-      type: 'image',
-      src: 'https://images.unsplash.com/photo-1773332585698-cba3c91b73e4?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      alt: 'Incident reconstruction',
+      type: 'video',
+      src: '/video/ayush-shots.mp4',
     },
   },
   {
@@ -49,9 +47,8 @@ const SERVICES: ServiceItem[] = [
     body:
       'Human fatality and accident reconstruction animations depict real industrial and road accidents in realistic 3D settings. They illustrate how incidents happened, highlight unsafe actions, and suggest prevention methods. These animations enhance safety awareness, boost compliance, and help reduce repeat human errors.',
     media: {
-      type: 'image',
-      src: 'https://images.unsplash.com/photo-1777829999062-917dd30ad425?q=80&w=2012&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      alt: 'Plant familiarisation',
+      type: 'video',
+      src: '/video/ayush-shots.mp4',
     },
   },
   {
@@ -59,9 +56,8 @@ const SERVICES: ServiceItem[] = [
     body:
       'Human fatality and accident reconstruction animations depict real industrial and road accidents in realistic 3D settings. They illustrate how incidents happened, highlight unsafe actions, and suggest prevention methods. These animations enhance safety awareness, boost compliance, and help reduce repeat human errors.',
     media: {
-      type: 'image',
-      src: 'https://images.unsplash.com/photo-1780789594881-dce91660ac13?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      alt: 'Plant familiarisation',
+      type: 'video',
+      src: '/video/ayush-shots.mp4',
     },
   },
 ]

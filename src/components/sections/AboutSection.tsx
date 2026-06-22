@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import type { CSSProperties } from 'react'
 import PrimaryButton from '../ui/PrimaryButton'
+import AboutFlowBackground from '../ui/AboutFlowBackground'
 import { colors, textStyles } from '../../styles/tokens'
 import aboutImage from '../../assets/about/about-feature.png'
-import differentiationImage from '../../assets/about/about-differentiation.png'
+const differentiationImage = '/images/Differ.png'
 
 type FeatureDetailProps = {
   title: string
@@ -50,8 +51,8 @@ const FEATURES_RIGHT = [
 function FeatureDetail({ title, description }: FeatureDetailProps) {
   return (
     <article className="about-feature">
-      <h3 style={{ ...textStyles.featureTitle, color: colors.white, fontWeight: 400 }}>{title}</h3>
-      <p style={{ ...textStyles.bodyLarge, color: colors.white70 }}>{description}</p>
+      <h3 style={{ ...textStyles.featureTitle, color: colors.ink, fontWeight: 400 }}>{title}</h3>
+      <p style={{ ...textStyles.bodyLarge, color: colors.ink60 }}>{description}</p>
     </article>
   )
 }
@@ -170,6 +171,7 @@ export default function AboutSection() {
   return (
     <section id="about" className="about-magicpath" aria-label="About SixDX">
       <style>{ABOUT_CSS}</style>
+      <AboutFlowBackground />
 
       <div className="about-inner about-intro" data-theme="light">
         <div className="about-copy-stack">
@@ -204,7 +206,7 @@ export default function AboutSection() {
       </div>
 
       <div className="about-inner about-differentiation" data-theme="dark">
-        <h2 style={{ ...textStyles.eyebrow, color: colors.white }}>THE DIFFERENTIATION</h2>
+        <h2 style={{ ...textStyles.eyebrow, color: colors.ink }}>THE DIFFERENTIATION</h2>
 
         <div className="about-feature-grid">
           <div className="about-feature-column">
@@ -234,26 +236,42 @@ export default function AboutSection() {
 
 const ABOUT_CSS = `
   .about-magicpath {
+    position: relative;
+    isolation: isolate;
     width: 100%;
     min-height: 1950px;
     padding-top: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background:
-      linear-gradient(
-        180deg,
-        rgba(255,255,255,1) 15%,
-        rgb(251, 241, 239) 24%,
-        rgb(250, 224, 216) 39%,
-        rgba(212,105,69,1) 54%,
-        rgba(204,77,34,1) 58%,
-        rgba(17,7,3,1) 89%
-      );
+    background: #fbf3eb;
     overflow: hidden;
   }
 
+  .about-flow-background {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    background:
+      radial-gradient(at 75% 60%, rgba(255, 202, 128, 0.45) 0%, transparent 55%),
+      radial-gradient(at 30% 150%, #fff266 0%, transparent 50%),
+      radial-gradient(at 75% 120%, rgba(255, 217, 102, 0.9) 0%, transparent 50%),
+      radial-gradient(at 15% 150%, #f50004 35%, transparent 70%),
+      radial-gradient(at 85% 120%, #ff0004 55%, transparent 85%),
+      #fbf3eb;
+  }
+
+  .about-flow-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
   .about-inner {
+    position: relative;
+    z-index: 1;
     width: 100%;
     max-width: none;
     box-sizing: border-box;
@@ -444,7 +462,7 @@ const ABOUT_CSS = `
     width: 100%;
     margin: 40px 0 0;
     border: 0;
-    border-top: 1px solid rgba(255,255,255,0.2);
+    border-top: 1px solid rgba(10,4,2,0.15);
   }
 
   .about-feature {
@@ -461,9 +479,9 @@ const ABOUT_CSS = `
   }
 
   .about-differentiation-art {
-    width: 128px;
-    height: 621px;
-    object-fit: cover;
+    width: 600px;
+    height: 600px;
+    object-fit: contain;
     mix-blend-mode: hard-light;
     flex: 0 0 auto;
   }
@@ -472,16 +490,6 @@ const ABOUT_CSS = `
     .about-magicpath {
       min-height: auto;
       padding-top: 60px;
-      background:
-        linear-gradient(
-          178.944767463296deg,
-          rgb(255, 255, 255) 18.311%,
-          rgb(251, 234, 229) 28.084%,
-          rgb(235, 181, 163) 45.783%,
-          rgb(212, 105, 69) 63.01%,
-          rgb(204, 77, 34) 68.299%,
-          rgb(17, 7, 3) 103.68%
-        );
     }
 
     .about-inner {
@@ -557,9 +565,9 @@ const ABOUT_CSS = `
     }
 
     .about-differentiation-art {
-      width: 70px;
-      height: 338px;
-      object-position: center;
+      width: 220px;
+      height: 220px;
+      object-fit: contain;
     }
   }
 
@@ -567,16 +575,6 @@ const ABOUT_CSS = `
     .about-magicpath {
       min-height: auto;
       padding-top: 40px;
-      background:
-        linear-gradient(
-          177.74973122637272deg,
-          rgb(255, 255, 255) 18.311%,
-          rgb(251, 234, 229) 28.084%,
-          rgb(235, 181, 163) 45.783%,
-          rgb(212, 105, 69) 63.01%,
-          rgb(204, 77, 34) 68.299%,
-          rgb(17, 7, 3) 103.68%
-        );
     }
 
     .about-inner {
@@ -649,7 +647,7 @@ const ABOUT_CSS = `
     .about-feature-item {
       width: 100%;
       padding-bottom: 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
+      border-bottom: 1px solid rgba(10,4,2,0.15);
     }
 
     .about-feature-column:last-child .about-feature-item:last-child {

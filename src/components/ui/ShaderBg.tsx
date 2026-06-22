@@ -28,16 +28,16 @@ type ShaderBgProps = {
 }
 
 const DEFAULT_CONTROLS: Required<ShaderBgControls> = {
-  speed: 1,
+  speed: 90,
   intensity: 1,
-  blurMix: 0.4,
+  blurMix: 0,
   grainAmount: 0.08,
-  vignetteStrength: 0.3,
-  darkColor: [0.08, 0.08, 0.08],
+  vignetteStrength: 0,
+  darkColor: [0.8823529412, 0.6588235294, 0.3254901961],
   lightColor: [0.55, 0.55, 0.55],
   pointerRadius: 0.34,
   pointerStrength: 0.18,
-  pointerFluidity: 0.15,
+  pointerFluidity: 8.15,
   pointerDecay: 0.9,
   flowmapSize: 128,
   flowFalloff: 0.5,
@@ -367,8 +367,12 @@ export default function ShaderBg({ controls, className, style, disabledMediaQuer
     const resize = () => {
       const rect = canvas.getBoundingClientRect()
       const dpr = Math.min(window.devicePixelRatio || 1, 2)
-      const width = Math.max(1, Math.round(rect.width * dpr))
-      const height = Math.max(1, Math.round(rect.height * dpr))
+      const requestedWidth = Math.max(1, rect.width * dpr)
+      const requestedHeight = Math.max(1, rect.height * dpr)
+      const maxRenderPixels = 2_000_000
+      const renderScale = Math.min(1, Math.sqrt(maxRenderPixels / (requestedWidth * requestedHeight)))
+      const width = Math.max(1, Math.round(requestedWidth * renderScale))
+      const height = Math.max(1, Math.round(requestedHeight * renderScale))
       if (canvas.width !== width || canvas.height !== height) {
         canvas.width = width
         canvas.height = height

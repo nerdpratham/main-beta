@@ -521,18 +521,7 @@ export default function StackSection() {
             height: auto !important;
             min-height: 100svh !important;
             overflow: visible !important;
-            background:
-              linear-gradient(
-                177.74973122637272deg,
-                rgb(255,255,255) 18.311%,
-                rgb(251,234,229) 28.084%,
-                rgb(235,181,163) 45.783%,
-                rgb(212,105,69) 63.01%,
-                rgb(204,77,34) 68.299%,
-                rgb(17,7,3) 103.68%
-              );
-            background-size: 100% 150%;
-            background-position: 50% 56%;
+            background: #0a0a0a;
           }
 
           .stack-viewport {
@@ -602,18 +591,7 @@ export default function StackSection() {
 
         @media (max-width: 1199px) {
           .stack-scene {
-            background:
-              linear-gradient(
-                178.944767463296deg,
-                rgb(255,255,255) 18.311%,
-                rgb(251,234,229) 28.084%,
-                rgb(235,181,163) 45.783%,
-                rgb(212,105,69) 63.01%,
-                rgb(204,77,34) 68.299%,
-                rgb(17,7,3) 103.68%
-              );
-            background-size: 100% 150%;
-            background-position: 50% 56%;
+            background: #0a0a0a;
           }
 
           .stack-precision-overlay {
@@ -670,21 +648,6 @@ export default function StackSection() {
           color: #fff;
         }
 
-        .stack-about-gradient-bg {
-          position: absolute;
-          inset: 0;
-          z-index: 0;
-          pointer-events: none;
-          background:
-            linear-gradient(
-              180deg,
-              rgba(17,7,3,1) 20%,
-              rgba(204,77,34,1) 75%,
-              rgba(212,105,69,1) 100%
-            );
-          background-size: 100% 100%;
-          background-position: 50% 50%;
-        }
 
         .stack-scene-content {
           z-index: 1;
@@ -851,7 +814,6 @@ export default function StackSection() {
             className="stack-scene absolute inset-0 z-20 overflow-hidden"
             style={{ borderRadius: 500 }}
           >
-            <div className="stack-about-gradient-bg" aria-hidden="true" />
 
             <div className="stack-scene-content absolute inset-0 flex flex-col items-center justify-center"
               style={{ padding: '40px 40px', gap: 80 }}>
